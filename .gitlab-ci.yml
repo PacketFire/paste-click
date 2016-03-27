@@ -1,0 +1,18 @@
+image: 'golang:latest'
+
+before_script:
+  - 'export GIT_SSL_NO_VERIFY=true'
+
+stages:
+  - test
+  - build
+
+go_test:
+  stage: test
+  script:
+    - go fmt
+    - go test
+
+go_build:
+  stage: build
+  script: go build
