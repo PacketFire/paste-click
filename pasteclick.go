@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -8,9 +9,8 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	"sync"
-	"errors"
 	"strings"
+	"sync"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -18,6 +18,7 @@ var Config = map[string]string{
 	"savePath": "/www/paste.click/",
 	"proto":    "http://",
 }
+
 type MimeMap struct {
 	sync.RWMutex
 	m map[string]string
@@ -155,10 +156,10 @@ func savePost(post *http.Request) []byte {
 	if err != nil {
 		log.Print(err)
 	}
-	mMap := new (MimeMap)
+	mMap := new(MimeMap)
 	mMap.New()
 	mimeType := http.DetectContentType(rawVal)
-	ext,err := mMap.Extension(mimeType);
+	ext, err := mMap.Extension(mimeType)
 	filePath := strings.Join([]string{Config["savePath"], code, ext}, "")
 	filePathTouch := strings.Join([]string{Config["savePath"], "_", code}, "")
 	err = ioutil.WriteFile(filePathTouch, []byte(""), 0600)
