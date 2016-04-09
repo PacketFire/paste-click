@@ -181,7 +181,7 @@ func savePost(post *http.Request) []byte {
 		log.Print(err)
 	}
 	log.Printf("[ %v ] New File: %v", post.Header.Get("X-Real-IP"), filePath)
-   fileUrl := strings.Join([]string{post.Header.Get("X-Scheme"),"://", post.Host, post.RequestURI, code, "\n"}, "")
+	fileUrl := strings.Join([]string{post.Header.Get("X-Scheme"), "://", post.Host, post.RequestURI, code, "\n"}, "")
 	return []byte(fileUrl)
 }
 func randSeq(n int, path string) []rune {
