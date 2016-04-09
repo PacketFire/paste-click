@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"github.com/rakyll/magicmime"
 	"io/ioutil"
 	"log"
 	"log/syslog"
@@ -16,7 +17,6 @@ import (
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 var Config = map[string]string{
 	"savePath": "/www/paste.click/",
-	"proto":    "http://",
 }
 
 type MimeMap struct {
@@ -149,6 +149,19 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "Not a POST request", 400)
 	return
 }
+func getMimeString(data []byte) string {
+	if err := magicmime.Open(magicmime.MAGIC_MIME_TYPE | magicmime.MAGIC_ERROR); err != nil {
+		log.Fatal(err)
+	}
+	defer magicmime.Close()
+
+	mimetype, err := magicmime.TypeByBuffer(data)
+	if err != nil {
+		log.Fatalf("error occured during type lookup: %v", err)
+	}
+	return mimetype
+}
+
 func savePost(post *http.Request) []byte {
 	//hash it and write to disk;
 	code := string(randSeq(6, Config["savePath"]))
@@ -158,7 +171,7 @@ func savePost(post *http.Request) []byte {
 	}
 	mMap := new(MimeMap)
 	mMap.New()
-	mimeType := http.DetectContentType(rawVal)
+	mimeType := getMimeString(rawVal)
 	ext, err := mMap.Extension(mimeType)
 	filePath := strings.Join([]string{Config["savePath"], code, ext}, "")
 	filePathTouch := strings.Join([]string{Config["savePath"], "_", code}, "")
