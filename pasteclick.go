@@ -142,11 +142,11 @@ func (this *MimeMap) NewExtension(t string, e string) error {
 }
 func handler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
-		write := savePost(r)
+		write := savePost(w, r)
 		w.Write(write)
 		return
 	}
-	http.Error(w, "Not a POST request", 400)
+	http.Error(w, "Not a POST request", 405)
 	return
 }
 func getMimeString(data []byte) string {
@@ -162,12 +162,16 @@ func getMimeString(data []byte) string {
 	return mimetype
 }
 
-func savePost(post *http.Request) []byte {
+func savePost(w http.ResponseWriter, post *http.Request) []byte {
 	//hash it and write to disk;
 	code := string(randSeq(6, Config["savePath"]))
 	rawVal, err := ioutil.ReadAll(post.Body)
 	if err != nil {
 		log.Print(err)
+	}
+	if len(rawVal) < 1 {
+		http.Error(w, "Content body cannot be empty", 400)
+		log.Fatalf("[ %v ] Filesize is 0, not writing empty file", post.Header.Get("X-Real-IP"))
 	}
 	mMap := new(MimeMap)
 	mMap.New()
