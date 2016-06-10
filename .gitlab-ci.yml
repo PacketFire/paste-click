@@ -10,6 +10,7 @@ stages:
 go_test:
   stage: test
   script:
+    - apt install libmagic-dev
     - go get github.com/rakyll/magicmime
     - go fmt
     - go test
