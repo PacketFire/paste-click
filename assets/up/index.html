@@ -12,6 +12,12 @@
     <script>
       var axios = window.axios;
 
+      // document.addEventListener('readystatechange', function() {
+      //   if (document.readyState === 'interactive') {
+      //     document.getElementById('browse').value = null;
+      //   }
+      // });
+
       function toggleLoading() {
         document.getElementById('loading-pane').classList.toggle('active');
       }
@@ -33,11 +39,24 @@
         });
       }
 
+      function upload(e) {
+        var files = e.target.files;
+
+        if (files.length === 1) {
+          var file = files[0];
+
+          axios.post('/', file).then(function(res) {
+            window.location = res.data;
+          });
+
+          toggleLoading()
+        }
+      }
+
       window.addEventListener('drop', function(e) {
         e.preventDefault();
 
-        var dt = e.dataTransfer;
-        var files = dt.files;
+        var files = e.dataTransfer.files;
 
         if (files.length === 1) {
           var file = files[0];
@@ -47,7 +66,7 @@
           });
 
           overlayOff();
-          toggleLoading()
+          toggleLoading();
         }
       }, false);
 
@@ -110,8 +129,14 @@
       }
 
       .submit {
-        text-align: right;
+        display: flex;
+        justify-content: space-between;
+
         margin-top: 8px;
+      }
+
+      .submit-left {
+        margin-top: 4px;
       }
 
       .loading-pane {
@@ -222,12 +247,19 @@
 
     <div id="app">
       <div class="container">
-        <div class="title">paste.click: Paste your text below, or drag-and-drop a file in this window</div>
+        <div class="title">paste.click: Paste your text, browse for a file, or drag-and-drop a file in this window</div>
 
         <textarea id="paste"></textarea>
 
         <div class="submit">
-          <button onclick="submit()">Paste</button>
+          <div class="submit-left">
+            <form>
+              <input type="file" id="browse" onchange="upload(event)" autocomplete="off" />
+            </form>
+          </div>
+          <div class="submit-right">
+            <button onclick="submit()">Paste</button>
+          </div>
         </div>
       </div>
     </div>
