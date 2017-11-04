@@ -223,9 +223,10 @@ func bindPort() string {
 func main() {
 	logger, err := syslog.New(syslog.LOG_DAEMON, "pasteclickd: ")
 	if err != nil {
-		fmt.Println(err)
+		log.SetOutput(os.Stdout)
+	} else {
+		log.SetOutput(logger)
 	}
-	log.SetOutput(logger)
 
 	http.HandleFunc("/", handler)
 	err = http.ListenAndServe(fmt.Sprintf("%s:%s", bindAddr(), bindPort()), nil)
