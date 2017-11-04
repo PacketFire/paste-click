@@ -7,9 +7,13 @@ services:
       - 8443:443
     volumes:
       - content:/www/paste.click/
-      - ./assets:/www/paste.click/index.html
+      - frontend_logs:/var/log/nginx
+      - ./assets/index.html:/www/paste.click/index.html
       - ./assets/s:/www/paste.click/s
       - ./assets/up:/www/paste.click/up
+      - ./conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ./conf/paste.click.conf:/usr/local/openresty/nginx/conf/sites-enabled/paste.click.conf:ro
+      - ./conf/ssl:/etc/ssl/nginx:ro
     networks:
       - backend
   backend:
@@ -17,9 +21,9 @@ services:
     build:
       context: ./
     command:
-      - go
-      - run
-      - 'gitlab.packetfire.org/Tiksi/paste-click'
+      - 'go'
+      - 'run'
+      - 'src/gitlab.packetfire.org/Tiksi/paste-click/pasteclick.go'
     environment:
       GOPATH: '/go'
     volumes:
@@ -31,5 +35,6 @@ services:
       - backend
 volumes:
   content:
+  frontend_logs:
 networks:
   backend:
