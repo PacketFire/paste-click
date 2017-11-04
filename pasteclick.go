@@ -188,6 +188,7 @@ func savePost(w http.ResponseWriter, post *http.Request) []byte {
 	fileUrl := strings.Join([]string{post.Header.Get("X-Scheme"), "://", post.Host, post.RequestURI, code, "\n"}, "")
 	return []byte(fileUrl)
 }
+
 func randSeq(n int, path string) []rune {
 	b := make([]rune, n)
 	for i := range b {
@@ -198,14 +199,36 @@ func randSeq(n int, path string) []rune {
 	}
 	return b
 }
+
+// bindAddr returns the bind address for the server. The bind address can be
+// set by specifying the PASTE_CLICK_BINDADDR env variable.
+func bindAddr() string {
+	if addr := os.Getenv("PASTE_CLICK_BINDADDR"); addr != "" {
+		return addr
+	}
+
+	return "127.0.0.1"
+}
+
+// bindPort returns the port to bind to for the server. The bind port can be
+// set by specifying the PASTE_CLICK_BINDPORT env variable.
+func bindPort() string {
+	if port := os.Getenv("PASTE_CLICK_PORT"); port != "" {
+		return port
+	}
+
+	return "8001"
+}
+
 func main() {
 	logger, err := syslog.New(syslog.LOG_DAEMON, "pasteclickd: ")
 	if err != nil {
 		fmt.Println(err)
 	}
 	log.SetOutput(logger)
+
 	http.HandleFunc("/", handler)
-	err = http.ListenAndServe("127.0.0.1:8001", nil)
+	err = http.ListenAndServe(fmt.Sprintf("%s:%s", bindAddr(), bindPort()), nil)
 	if err != nil {
 		log.Print(err)
 	}

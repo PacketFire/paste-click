@@ -16,6 +16,8 @@ services:
       - ./conf/ssl:/etc/ssl/nginx:ro
     networks:
       - backend
+    depends_on:
+      - backend
   backend:
     image: ncatelli/golang:1.9.2-libmagic
     build:
@@ -26,6 +28,7 @@ services:
       - 'src/gitlab.packetfire.org/Tiksi/paste-click/pasteclick.go'
     environment:
       GOPATH: '/go'
+      PASTE_CLICK_BINDADDR: '0.0.0.0'
     volumes:
       - ./pasteclick.go:/go/src/gitlab.packetfire.org/Tiksi/paste-click/pasteclick.go
       - ./pasteclick_test.go:/go/src/gitlab.packetfire.org/Tiksi/paste-click/pasteclick_test.go
