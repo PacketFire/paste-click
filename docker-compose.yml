@@ -1,0 +1,35 @@
+version: '3.1'
+services:
+  frontend:
+    image: openresty/openresty:alpine
+    ports:
+      - 8080:80
+      - 8443:443
+    volumes:
+      - content:/www/paste.click/
+      - ./assets:/www/paste.click/index.html
+      - ./assets/s:/www/paste.click/s
+      - ./assets/up:/www/paste.click/up
+    networks:
+      - backend
+  backend:
+    image: ncatelli/golang:1.9.2-libmagic
+    build:
+      context: ./
+    command:
+      - go
+      - run
+      - 'gitlab.packetfire.org/Tiksi/paste-click'
+    environment:
+      GOPATH: '/go'
+    volumes:
+      - ./pasteclick.go:/go/src/gitlab.packetfire.org/Tiksi/paste-click/pasteclick.go
+      - ./pasteclick_test.go:/go/src/gitlab.packetfire.org/Tiksi/paste-click/pasteclick_test.go
+      - ./vendor:/go/src/gitlab.packetfire.org/Tiksi/paste-click/vendor
+      - content:/www/paste.click/
+    networks:
+      - backend
+volumes:
+  content:
+networks:
+  backend:
