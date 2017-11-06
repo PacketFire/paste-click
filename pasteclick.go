@@ -178,12 +178,16 @@ func savePost(w http.ResponseWriter, post *http.Request) []byte {
 	mimeType := getMimeString(rawVal)
 	ext, err := mMap.Extension(mimeType)
 	filePath := strings.Join([]string{Config["savePath"], code, ext}, "")
-	filePathTouch := strings.Join([]string{Config["savePath"], "_", code}, "")
-	err = ioutil.WriteFile(filePathTouch, []byte(""), 0644)
 	err = ioutil.WriteFile(filePath, rawVal, 0644)
 	if err != nil {
 		log.Print(err)
 	}
+
+	err = saveMeta(code, filePath, mimeType, ext)
+	if err != nil {
+		log.Print(err)
+	}
+
 	log.Printf("[ %v ] New File: %v", post.Header.Get("X-Real-IP"), filePath)
 	fileUrl := strings.Join([]string{post.Header.Get("X-Scheme"), "://", post.Host, post.RequestURI, code, "\n"}, "")
 	return []byte(fileUrl)
@@ -198,6 +202,28 @@ func randSeq(n int, path string) []rune {
 		b = randSeq(n, path)
 	}
 	return b
+}
+
+// saveMeta attempts to write the FileMetadata to disk.
+func saveMeta(shortCode, fp, mimeType, ext string) error {
+	var err error
+	mp := strings.Join([]string{Config["savePath"], "_", shortCode}, "")
+
+	stat, err := os.Stat(fp)
+	if err != nil {
+		return err
+	}
+
+	fm := NewFileMetadata(stat.Size(), mimeType, "", fp)
+
+	json, err := fm.JSON()
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(mp, json, 0644)
+
+	return err
 }
 
 // bindAddr returns the bind address for the server. The bind address can be
