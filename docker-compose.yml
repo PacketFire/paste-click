@@ -1,0 +1,43 @@
+version: '3.1'
+services:
+  frontend:
+    image: openresty/openresty:alpine
+    ports:
+      - 8080:80
+      - 8443:443
+    volumes:
+      - content:/www/paste.click/
+      - frontend_logs:/var/log/nginx
+      - ./assets/index.html:/www/paste.click/index.html
+      - ./assets/s:/www/paste.click/s
+      - ./assets/up:/www/paste.click/up
+      - ./conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ./conf/paste.click.conf:/usr/local/openresty/nginx/conf/sites-enabled/paste.click.conf:ro
+      - ./conf/ssl:/etc/ssl/nginx:ro
+    networks:
+      - backend
+    depends_on:
+      - backend
+  backend:
+    image: ncatelli/golang:1.9.2-libmagic
+    build:
+      context: ./
+    command:
+      - 'go'
+      - 'run'
+      - 'src/gitlab.packetfire.org/Tiksi/paste-click/pasteclick.go'
+    environment:
+      GOPATH: '/go'
+      PASTE_CLICK_BINDADDR: '0.0.0.0'
+    volumes:
+      - ./pasteclick.go:/go/src/gitlab.packetfire.org/Tiksi/paste-click/pasteclick.go
+      - ./pasteclick_test.go:/go/src/gitlab.packetfire.org/Tiksi/paste-click/pasteclick_test.go
+      - ./vendor:/go/src/gitlab.packetfire.org/Tiksi/paste-click/vendor
+      - content:/www/paste.click/
+    networks:
+      - backend
+volumes:
+  content:
+  frontend_logs:
+networks:
+  backend:
