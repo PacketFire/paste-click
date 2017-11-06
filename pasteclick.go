@@ -179,8 +179,8 @@ func savePost(w http.ResponseWriter, post *http.Request) []byte {
 	ext, err := mMap.Extension(mimeType)
 	filePath := strings.Join([]string{Config["savePath"], code, ext}, "")
 	filePathTouch := strings.Join([]string{Config["savePath"], "_", code}, "")
-	err = ioutil.WriteFile(filePathTouch, []byte(""), 0600)
-	err = ioutil.WriteFile(filePath, rawVal, 0600)
+	err = ioutil.WriteFile(filePathTouch, []byte(""), 0644)
+	err = ioutil.WriteFile(filePath, rawVal, 0644)
 	if err != nil {
 		log.Print(err)
 	}
