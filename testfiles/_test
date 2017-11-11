@@ -1,8 +1,6 @@
 {
-  "access_count": 10,
   "size": 10530208,
   "mime_type": "video/mp4",
   "filename": "test.mp4",
-  "uploaded": "2017-01-01T23:28:56.782Z",
-  "path": "testfiles/test.mp4"
+  "uploaded": "2017-01-01T23:28:56.782Z"
 }

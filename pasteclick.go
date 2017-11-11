@@ -205,16 +205,16 @@ func randSeq(n int, path string) []rune {
 }
 
 // saveMeta attempts to write the FileMetadata to disk.
-func saveMeta(shortCode, fp, mimeType, ext string) error {
+func saveMeta(sc, fp, mimeType, ext string) error {
 	var err error
-	mp := strings.Join([]string{Config["savePath"], "_", shortCode}, "")
+	mp := strings.Join([]string{Config["savePath"], "_", sc}, "")
 
 	stat, err := os.Stat(fp)
 	if err != nil {
 		return err
 	}
 
-	fm := NewFileMetadata(stat.Size(), mimeType, "", fp)
+	fm := NewFileMetadata(stat.Size(), mimeType, "", sc)
 
 	json, err := fm.JSON()
 	if err != nil {
