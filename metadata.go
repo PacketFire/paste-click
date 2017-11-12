@@ -14,6 +14,7 @@ type FileMetadata struct {
 	Mimetype string `json:"mime_type"`
 	Filename string `json:"filename,omitempty"`
 	Uploaded string `json:"uploaded"`
+	Object   string `json:"object"`
 }
 
 func NewFileMetadata(size int64, mime, filename, object string) *FileMetadata {
@@ -22,6 +23,7 @@ func NewFileMetadata(size int64, mime, filename, object string) *FileMetadata {
 		Mimetype: mime,
 		Filename: filename,
 		Uploaded: time.Now().String(),
+		Object:   object,
 	}
 }
 

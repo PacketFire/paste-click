@@ -208,13 +208,14 @@ func randSeq(n int, path string) []rune {
 func saveMeta(sc, fp, mimeType, ext string) error {
 	var err error
 	mp := strings.Join([]string{Config["savePath"], "_", sc}, "")
+	obj := strings.Join([]string{sc, ext}, "")
 
 	stat, err := os.Stat(fp)
 	if err != nil {
 		return err
 	}
 
-	fm := NewFileMetadata(stat.Size(), mimeType, "", sc)
+	fm := NewFileMetadata(stat.Size(), mimeType, "", obj)
 
 	json, err := fm.JSON()
 	if err != nil {

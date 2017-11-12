@@ -9,7 +9,7 @@ ngx.var.lua_obj_uri = meta["object"]
 local mime = meta["mime_type"]
 
 if ngx.var.lua_obj_uri then
-  ngx.exec(@serve_obj)
+  ngx.exec("@serve_obj", "")
 else
   ngx.log(ngx.ERR, "obj invalid.")
   ngx.exec("@no_meta", "")
