@@ -7,14 +7,13 @@ services:
       - 8443:443
     volumes:
       - content:/www/paste.click/
-      - frontend_logs:/var/log/nginx
       - ./assets/index.html:/www/paste.click/index.html
       - ./assets/s:/www/paste.click/s
       - ./assets/up:/www/paste.click/up
-      - ./conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
-      - ./conf/paste.click.conf:/usr/local/openresty/nginx/conf/sites-enabled/paste.click.conf:ro
-      - ./conf/lua:/usr/local/openresty/nginx/conf/lua
-      - ./conf/ssl:/etc/ssl/nginx:ro
+      - ./resty/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ./resty/paste.click.conf:/usr/local/openresty/nginx/conf/sites-enabled/paste.click.conf:ro
+      - ./resty/lua:/usr/local/openresty/nginx/conf/lua
+      - ./resty/ssl:/etc/ssl/nginx:ro
     networks:
       - backend
     depends_on:
@@ -35,6 +34,5 @@ services:
       - backend
 volumes:
   content:
-  frontend_logs:
 networks:
   backend:
