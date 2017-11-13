@@ -1,25 +1,20 @@
-image: 'golang:latest'
+image: 'docker:latest'
+
+services:
+  - docker:dind
+
+variables:
+  CGO_ENABLED: "0"
+  GIT_SSL_NO_VERIFY: "true"
 
 before_script:
-  - 'export GIT_SSL_NO_VERIFY=true'
+  - apk update
+  - apk add make
 
 stages:
   - test
-  - build
 
 go_test:
   stage: test
   script:
-    - apt update
-    - apt install -y libmagic-dev
-    - go get github.com/rakyll/magicmime
-    - go fmt
-    - go test
-
-go_build:
-  stage: build
-  script: 
-    - apt update
-    - apt install -y libmagic-dev
-    - go get github.com/rakyll/magicmime
-    - go build
+    - make -s test
