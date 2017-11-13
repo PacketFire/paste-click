@@ -1,6 +1,11 @@
 local cjson = require "cjson"
 local baseFile = ngx.var.uri:match("[^/]+$")
+
 local metaFile = io.open(ngx.var.document_root .. "/_" .. baseFile, "r")
+if metaFile == nil then 
+  ngx.exec("@no_meta", "") 
+end
+
 local raw = metaFile:read("*all")
 io.close(metaFile)
 
