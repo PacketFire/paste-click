@@ -9,7 +9,8 @@ variables:
 
 before_script:
   - apk update
-  - apk add make
+  - apk add make python py-pip
+  - pip install docker-compose
 
 stages:
   - test
