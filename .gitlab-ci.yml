@@ -12,6 +12,9 @@ stages:
 
 makefile fmt and test:
   stage: test
+  before_script:
+    - apk update
+    - apk add make
   script:
     - make -s test
 
@@ -19,7 +22,7 @@ compose:
   stage: test
   before_script:
     - apk update
-    - apk add make python py-pip
+    - apk add python py-pip
     - pip install docker-compose
   script:
     - docker-compose up -d
