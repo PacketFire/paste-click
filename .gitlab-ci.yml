@@ -7,14 +7,23 @@ variables:
   CGO_ENABLED: "0"
   GIT_SSL_NO_VERIFY: "true"
 
-before_script:
-  - apk update
-  - apk add make
-
 stages:
   - test
 
-go_test:
+makefile fmt and test:
   stage: test
+  before_script:
+    - apk update
+    - apk add make
   script:
     - make -s test
+
+compose:
+  stage: test
+  before_script:
+    - apk update
+    - apk add python py-pip
+    - pip install docker-compose
+  script:
+    - docker-compose up -d
+    - docker-compose down -v
