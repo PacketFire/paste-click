@@ -14,6 +14,10 @@ ngx.var.lua_obj_uri = "/" .. meta["object"]
 local mime = meta["mime_type"]
 
 if ngx.var.lua_obj_uri then
+  for k, v in pairs(meta) do
+    ngx.header['PC-' .. k] = v
+  end
+
   ngx.exec("@serve_obj", "")
 else
   ngx.exec("@no_meta", "")
