@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/rakyll/magicmime"
+	"gitlab.packetfire.org/Tiksi/paste-click/store"
 	"io/ioutil"
 	"log"
 	"log/syslog"
@@ -215,7 +216,7 @@ func saveMeta(sc, fp, mimeType, ext string) error {
 		return err
 	}
 
-	fm := NewFileMetadata(stat.Size(), mimeType, "", obj)
+	fm := store.NewFileMetadata(stat.Size(), mimeType, "", obj)
 
 	json, err := fm.JSON()
 	if err != nil {
