@@ -1,7 +1,7 @@
 image: 'docker:latest'
 
 services:
-  - docker:dind
+  - docker:17.09.0-dind
 
 variables:
   CGO_ENABLED: "0"
