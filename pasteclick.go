@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/rakyll/magicmime"
-	"gitlab.packetfire.org/Tiksi/paste-click/store"
+	"github.com/Packetfire/paste-click/store"
 	"io/ioutil"
 	"log"
 	"log/syslog"
