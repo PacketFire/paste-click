@@ -12,7 +12,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Packetfire/paste-click/store"
+	"github.com/PacketFire/paste-click/store"
 	"github.com/rakyll/magicmime"
 )
 
@@ -31,29 +31,29 @@ func (this *MimeMap) New() {
 	defer this.Unlock()
 
 	this.m = map[string]string{
-		"audio/midi":                          ".mid",
-		"audio/mp4":                           ".aac",
-		"audio/mpeg":                          ".mp3",
-		"audio/ogg":                           ".oga",
-		"audio/x-realaudio":                   ".ra",
-		"audio/x-wav":                         ".wav",
-		"image/bmp":                           ".bmp",
-		"image/gif":                           ".gif",
-		"image/jpeg":                          ".jpeg",
-		"image/png":                           ".png",
-		"image/svg+xml":                       ".svg",
-		"image/tiff":                          ".tif",
-		"image/vnd.wap.wbmp":                  ".wbmp",
-		"image/webp":                          ".webp",
-		"image/x-icon":                        ".ico",
-		"image/x-jng":                         ".jng",
-		"application/javascript":              ".js",
-		"application/json":                    ".json",
-		"application/x-web-app-manifest+json": ".webapp",
-		"text/cache-manifest":                 ".manifest",
-		"application/msword":                  ".doc",
-		"application/vnd.ms-excel":            ".xls",
-		"application/vnd.ms-powerpoint":       ".ppt",
+		"audio/midi":                                                                ".mid",
+		"audio/mp4":                                                                 ".aac",
+		"audio/mpeg":                                                                ".mp3",
+		"audio/ogg":                                                                 ".oga",
+		"audio/x-realaudio":                                                         ".ra",
+		"audio/x-wav":                                                               ".wav",
+		"image/bmp":                                                                 ".bmp",
+		"image/gif":                                                                 ".gif",
+		"image/jpeg":                                                                ".jpeg",
+		"image/png":                                                                 ".png",
+		"image/svg+xml":                                                             ".svg",
+		"image/tiff":                                                                ".tif",
+		"image/vnd.wap.wbmp":                                                        ".wbmp",
+		"image/webp":                                                                ".webp",
+		"image/x-icon":                                                              ".ico",
+		"image/x-jng":                                                               ".jng",
+		"application/javascript":                                                    ".js",
+		"application/json":                                                          ".json",
+		"application/x-web-app-manifest+json":                                       ".webapp",
+		"text/cache-manifest":                                                       ".manifest",
+		"application/msword":                                                        ".doc",
+		"application/vnd.ms-excel":                                                  ".xls",
+		"application/vnd.ms-powerpoint":                                             ".ppt",
 		"application/vnd.openxmlformats-officedocument.wordprocessingml.document":   ".docx",
 		"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":         ".xlsx",
 		"application/vnd.openxmlformats-officedocument.presentationml.presentation": ".pptx",

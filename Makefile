@@ -1,4 +1,4 @@
-PKG="github.com/Packetfire/paste-click"
+PKG="github.com/PacketFire/paste-click"
 GOENV="ncatelli/golang:1.9.2-libmagic"
 
 build: | depend fmt test
