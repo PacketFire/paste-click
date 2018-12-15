@@ -1,13 +1,21 @@
 PKG="github.com/Packetfire/paste-click"
 GOENV="ncatelli/golang:1.9.2-libmagic"
 
-build: | test
-	docker run --rm -u root -v $(PWD):/go/src/$(PKG) $(GOENV) go build $(PKG)
-	docker run --rm -u root -v $(PWD):/go/src/$(PKG) $(GOENV) go fmt $(PKG)/store
+build: | depend fmt test
+	go build
 
-fmt:
-	docker run --rm -u root -v $(PWD):/go/src/$(PKG) $(GOENV) go fmt $(PKG)
-	docker run --rm -u root -v $(PWD):/go/src/$(PKG) $(GOENV) go fmt $(PKG)/store
+depend:
+	glide update ; glide install
 
-test: | fmt
-	docker run --rm -u root -v $(PWD):/go/src/$(PKG) $(GOENV) go test $(PKG)
+build-docker: | depend fmt test
+	docker build -t ${IMGNAME}:latest .
+
+test: | depend
+	go test -cover ./...
+
+fmt: | depend
+	go fmt ./...
+
+clean:
+	rm -f immigrant; \
+	docker rmi -f ${IMGNAME}:`cat "version.txt"`

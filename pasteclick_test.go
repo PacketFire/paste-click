@@ -73,7 +73,7 @@ func TestNewExtensionValid(t *testing.T) {
 	mMap.New()
 	for k, v := range newExtensions {
 		if e := mMap.NewExtension(k, v); e != nil {
-			t.Errorf("Attempt to add new valid extension %v failed with an error")
+			t.Errorf("Attempt to add new valid extension %s failed with an error", v)
 		}
 	}
 
