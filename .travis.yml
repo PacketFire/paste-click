@@ -1,0 +1,11 @@
+language: go
+
+go:
+  - "1.10.x"
+  - "1.11.x"
+
+before_install:
+  - apt-get install -y libmagic libmagic-dev golang-glide gcc make
+
+script:
+  - make test
