@@ -5,6 +5,9 @@ go:
 
 before_install:
   - apt-get install -y libmagic libmagic-dev golang-glide gcc make
+addons:
+  apt:
+    update: true
 
 script:
   - make test
