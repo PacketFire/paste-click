@@ -1,2 +1,5 @@
 /pasteclick
 *.swp
+
+vendor/
+glide.lock

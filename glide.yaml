@@ -1,0 +1,4 @@
+package: github.com/Packetfire/paste-click
+import:
+- package: github.com/rakyll/magicmime
+  version: ^0.1.0
