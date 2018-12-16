@@ -11,3 +11,9 @@ func healthHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprintf(w, `{"status": "Ok"}`)
 }
+
+func uploadHandler(w http.ResponseWriter, r *http.Request) {
+	//		write := savePost(w, r)
+	//		w.Write(write)
+	return
+}

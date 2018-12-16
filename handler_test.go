@@ -44,4 +44,11 @@ func TestBuiltInRoutes(t *testing.T) {
 			t.Error(err)
 		}
 	})
+
+	t.Run("Upload handler returns the correct response", func(t *testing.T) {
+		err := handlerTest("POST", "/", nil, http.StatusOK, ``, uploadHandler)
+		if err != nil {
+			t.Error(err)
+		}
+	})
 }

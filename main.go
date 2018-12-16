@@ -18,6 +18,7 @@ func main() {
 
 	mux := mux.NewRouter()
 	mux.HandleFunc(`/healthcheck`, healthHandler).Methods("GET")
+	mux.HandleFunc(`/`, uploadHandler).Methods("POST")
 	router = mux
 
 	if c.Logging {
