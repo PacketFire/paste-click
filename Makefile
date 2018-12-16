@@ -1,5 +1,6 @@
 PKG="github.com/PacketFire/paste-click"
 GOENV="ncatelli/golang:1.9.2-libmagic"
+IMGNAME="packetfire/paste-click"
 
 build: | depend fmt test
 	go build
@@ -17,5 +18,5 @@ fmt: | depend
 	go fmt ./...
 
 clean:
-	rm -f immigrant; \
-	docker rmi -f ${IMGNAME}:`cat "version.txt"`
+	rm -f paste-click; \
+	docker rmi -f ${IMGNAME}:latest
