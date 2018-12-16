@@ -25,7 +25,7 @@ services:
     command: bash -c "go install github.com/Packetfire/paste-click && ./bin/paste-click"
     environment:
       GOPATH: '/go'
-      PASTE_CLICK_BINDADDR: '0.0.0.0'
+      ADDR: '0.0.0.0:8001'
     volumes:
       - .:/go/src/github.com/Packetfire/paste-click
       - ./vendor:/go/src/github.com/Packetfire/paste-click/vendor

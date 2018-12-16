@@ -7,7 +7,7 @@ import (
 // Config retrieves config from env vars that are specific to the
 // server.
 type Config struct {
-	Addr    string `env:"ADDR" envDefault:":8080"`
+	Addr    string `env:"ADDR" envDefault:":8001"`
 	Logging bool   `env:"LOGGING" envDefault:"true"`
 }
 
