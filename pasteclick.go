@@ -3,8 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/rakyll/magicmime"
-	"github.com/Packetfire/paste-click/store"
 	"io/ioutil"
 	"log"
 	"log/syslog"
@@ -13,6 +11,9 @@ import (
 	"os"
 	"strings"
 	"sync"
+
+	"github.com/PacketFire/paste-click/store"
+	"github.com/rakyll/magicmime"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
