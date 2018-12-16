@@ -9,7 +9,7 @@ import (
 // health check.
 func healthHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprintf(w, `{"status": "Ok"}`)
+	fmt.Fprint(w, `{"status": "Ok"}`)
 }
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
