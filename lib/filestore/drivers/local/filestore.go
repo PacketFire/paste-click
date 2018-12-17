@@ -2,15 +2,19 @@ package local
 
 import (
 	fs "github.com/PacketFire/paste-click/lib/filestore"
+	"github.com/caarlos0/env"
 )
 
 // Store implements the FileStore interface to store Objects on the local
 // filesystem.
-type Store struct{}
+type Store struct {
+	// the base path for reading and writing objects to.
+	BasePath string `env:"STORE_LOCAL_BASE_PATH,required"`
+}
 
 // Init initializes the local store.
 func (s *Store) Init() error {
-	return nil
+	return env.Parse(s)
 }
 
 // Read takes an ObjectID as an argument and attempts to read the corresponding

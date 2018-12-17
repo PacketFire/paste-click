@@ -1,16 +1,22 @@
 package local
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
+	"reflect"
 	"testing"
 	"time"
 
 	fs "github.com/PacketFire/paste-click/lib/filestore"
 )
 
+const (
+	testingBasePath = "/tmp/"
+)
+
 var (
-	UnusedObjectStoragePath = "/tmp/abcdef.txt"
+	UnusedObjectStoragePath = fmt.Sprintf("%s%s", testingBasePath, "abcdef.txt")
 	UnusedObject            = fs.Object{
 		Metadata: fs.Metadata{
 			Size:     10,
@@ -22,17 +28,35 @@ var (
 	}
 )
 
+func initializeStoreForTesting() Store {
+	return Store{
+		BasePath: testingBasePath,
+	}
+}
+
 func TestInit(t *testing.T) {
+	os.Setenv("STORE_LOCAL_BASE_PATH", testingBasePath)
+	defer os.Unsetenv("STORE_LOCAL_BASE_PATH")
+
+	expectedStore := Store{
+		BasePath: testingBasePath,
+	}
+
 	s := Store{}
 	if err := s.Init(); err != nil {
 		t.Errorf("Init should aways return nil, got %v want nil", err)
+	}
+
+	if !reflect.DeepEqual(s, expectedStore) {
+		t.Errorf("Initialized store doesn't match expected value, got %v want %v",
+			s,
+			expectedStore)
 	}
 	defer s.Close()
 }
 
 func TestStoreRead(t *testing.T) {
-	s := Store{}
-	s.Init()
+	s := initializeStoreForTesting()
 	defer s.Close()
 
 	err := ioutil.WriteFile(UnusedObjectStoragePath, UnusedObject.Data, 0644)
@@ -43,26 +67,24 @@ func TestStoreRead(t *testing.T) {
 
 	t.Run("an unallocated ID should successfully write", func(t *testing.T) {
 		if obj, err := s.Read(UnusedObject.Metadata.Object); err != nil && obj != nil {
-			t.Errorf("unable to write the file to disk, got %v want nil", err)
+			t.Errorf("Unable to read the file from disk, got %v want nil", err)
 		}
 	})
 }
 
 func TestStoreWrite(t *testing.T) {
-	s := Store{}
-	s.Init()
+	s := initializeStoreForTesting()
 	defer s.Close()
 
 	t.Run("an unallocated ID should successfully write", func(t *testing.T) {
 		if err := s.Write(&UnusedObject); err != nil {
-			t.Errorf("unable to write the file to disk, got %v want nil", err)
+			t.Errorf("Unable to write the file to disk, got %v want nil", err)
 		}
 	})
 }
 
 func TestClose(t *testing.T) {
-	s := Store{}
-	s.Init()
+	s := initializeStoreForTesting()
 	if err := s.Close(); err != nil {
 		t.Errorf("close should aways return nil, got %v want nil", err)
 	}

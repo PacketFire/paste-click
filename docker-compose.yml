@@ -26,6 +26,7 @@ services:
     environment:
       GOPATH: '/go'
       ADDR: ':8001'
+      STORE_LOCAL_BASE_PATH: "/www/paste.click/"
     ports:
       - 8001:8001
     volumes:
