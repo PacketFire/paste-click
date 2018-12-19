@@ -3,5 +3,8 @@ language: go
 go:
   - "1.11.x"
 
+before_install:
+  - sudo apt-get install -y libmagic-dev gcc make
+
 script:
   - make test
