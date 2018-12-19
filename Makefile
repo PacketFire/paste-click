@@ -2,19 +2,16 @@ PKG="github.com/PacketFire/paste-click"
 GOENV="ncatelli/golang:1.9.2-libmagic"
 IMGNAME="packetfire/paste-click"
 
-build: | depend fmt test
+build: | fmt test
 	go build
 
-depend:
-	glide update ; glide install
-
-build-docker: | depend fmt test
+build-docker: | fmt test
 	docker build -t ${IMGNAME}:latest .
 
-test: | depend
+test:
 	go test -cover ./...
 
-fmt: | depend
+fmt:
 	go fmt ./...
 
 clean:

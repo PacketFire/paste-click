@@ -1,8 +1,0 @@
-package: github.com/PacketFire/paste-click
-import:
-- package: github.com/rakyll/magicmime
-  version: ^0.1.0
-- package: github.com/gorilla/mux
-  version: ^v1.6.2
-- package: github.com/caarlos0/env
-  version: ^v3.5.0
