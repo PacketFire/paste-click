@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	fs "github.com/PacketFire/paste-click/lib/filestore"
+	"github.com/PacketFire/paste-click/lib/objectstore"
 )
 
 const (
@@ -17,8 +17,8 @@ const (
 
 var (
 	UnusedObjectStoragePath = fmt.Sprintf("%s%s", testingBasePath, "abcdef.txt")
-	UnusedObject            = fs.Object{
-		Metadata: fs.Metadata{
+	UnusedObject            = objectstore.Object{
+		Metadata: objectstore.Metadata{
 			Size:     10,
 			Mimetype: "text/plain",
 			Uploaded: time.Now().String(),
