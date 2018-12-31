@@ -16,8 +16,9 @@ const (
 )
 
 var (
-	UnusedObjectStoragePath = fmt.Sprintf("%s%s", testingBasePath, "abcdef.txt")
-	UnusedObject            = objectstore.Object{
+	UnusedObjectStoragePath         = fmt.Sprintf("%s%s", testingBasePath, "abcdef.txt")
+	UnusedObjectMetadataStoragePath = fmt.Sprintf("%s%s", testingBasePath, "_abcdef")
+	UnusedObject                    = objectstore.Object{
 		Metadata: objectstore.Metadata{
 			Size:     10,
 			Mimetype: "text/plain",
@@ -65,11 +66,19 @@ func TestStoreRead(t *testing.T) {
 	}
 	defer os.Remove(UnusedObjectStoragePath)
 
-	t.Run("an unallocated ID should successfully write", func(t *testing.T) {
-		if obj, err := s.Read(UnusedObject.Metadata.Object); err != nil && obj != nil {
+	metadata, _ := UnusedObject.Metadata.JSON()
+	err = ioutil.WriteFile(UnusedObjectMetadataStoragePath, metadata, 0644)
+	if err != nil {
+		t.Errorf("Unable to write temporary metadata file, %v.", UnusedObjectMetadataStoragePath)
+	}
+	defer os.Remove(UnusedObjectMetadataStoragePath)
+
+	t.Run("Should be able to read a file.", func(t *testing.T) {
+		if obj, err := s.Read(UnusedObject.Metadata.Object); err != nil || obj == nil {
 			t.Errorf("Unable to read the file from disk, got %v want nil", err)
 		}
 	})
+
 }
 
 func TestStoreWrite(t *testing.T) {
