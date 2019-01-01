@@ -1,7 +1,6 @@
 package local
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -89,7 +88,7 @@ func TestStoreRead(t *testing.T) {
 	s := initializeStoreForTesting()
 	defer s.Close()
 
-	objectMetadataStoragePath := fmt.Sprintf("%s%s", BasePath, "_abcdef")
+	objectMetadataStoragePath := filepath.Join(BasePath, "_abcdef")
 	object := generateObject(`abcdef`, `text/plain`, `helloworld`)
 
 	t.Run("Should be able to read a file.", func(t *testing.T) {
@@ -114,6 +113,7 @@ func TestStoreRead(t *testing.T) {
 			t.Errorf("Unable to write temporary metadata file, %v.", objectMetadataStoragePath)
 		}
 		defer os.Remove(objectMetadataStoragePath)
+
 		if _, err := s.Read(`abcdef`); err == nil {
 			t.Error("Invalid json should throw an error, got nil want error")
 		}
@@ -140,6 +140,9 @@ func TestStoreWrite(t *testing.T) {
 			t.Errorf("Unable to write the file to disk, got %v want nil", err)
 		}
 	})
+
+	os.Remove(filepath.Join(BasePath, "_abcdef"))
+	os.Remove(filepath.Join(BasePath, "abcdef.asc"))
 }
 
 func TestClose(t *testing.T) {
