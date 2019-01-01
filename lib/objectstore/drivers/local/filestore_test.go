@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 	"time"
@@ -12,12 +13,12 @@ import (
 )
 
 const (
-	testingBasePath = "/tmp/"
+	BasePath = "/tmp/"
 )
 
 func initializeStoreForTesting() Store {
 	return Store{
-		BasePath: testingBasePath,
+		BasePath: BasePath,
 	}
 }
 
@@ -33,12 +34,32 @@ func generateObject(objectID, mimetype, data string) objectstore.Object {
 	}
 }
 
+func runTestWithTemporaryObject(obj *objectstore.Object, extension string, callback func()) error {
+	dataPath := filepath.Join(BasePath, string(obj.Metadata.Object)+"."+extension)
+	metadataPath := filepath.Join(BasePath, "_"+string(obj.Metadata.Object))
+	err := ioutil.WriteFile(dataPath, obj.Data, 0644)
+	if err != nil {
+		return err
+	}
+	defer os.Remove(dataPath)
+
+	metadata, _ := obj.Metadata.JSON()
+	err = ioutil.WriteFile(metadataPath, metadata, 0644)
+	if err != nil {
+		return err
+	}
+	defer os.Remove(metadataPath)
+
+	callback()
+	return nil
+}
+
 func TestInit(t *testing.T) {
-	os.Setenv("STORE_LOCAL_BASE_PATH", testingBasePath)
+	os.Setenv("STORE_LOCAL_BASE_PATH", BasePath)
 	defer os.Unsetenv("STORE_LOCAL_BASE_PATH")
 
 	expectedStore := Store{
-		BasePath: testingBasePath,
+		BasePath: BasePath,
 	}
 
 	s := Store{}
@@ -58,27 +79,15 @@ func TestStoreRead(t *testing.T) {
 	s := initializeStoreForTesting()
 	defer s.Close()
 
-	objectStoragePath := fmt.Sprintf("%s%s", testingBasePath, "abcdef.asc")
-	objectMetadataStoragePath := fmt.Sprintf("%s%s", testingBasePath, "_abcdef")
+	objectMetadataStoragePath := fmt.Sprintf("%s%s", BasePath, "_abcdef")
 	object := generateObject(`abcdef`, `text/plain`, `helloworld`)
 
 	t.Run("Should be able to read a file.", func(t *testing.T) {
-		err := ioutil.WriteFile(objectStoragePath, object.Data, 0644)
-		if err != nil {
-			t.Errorf("Unable to write temporary file, %v.", objectStoragePath)
-		}
-		defer os.Remove(objectStoragePath)
-
-		metadata, _ := object.Metadata.JSON()
-		err = ioutil.WriteFile(objectMetadataStoragePath, metadata, 0644)
-		if err != nil {
-			t.Errorf("Unable to write temporary metadata file, %v.", objectMetadataStoragePath)
-		}
-		defer os.Remove(objectMetadataStoragePath)
-
-		if obj, err := s.Read(object.Metadata.Object); err != nil && reflect.DeepEqual(obj, object) {
-			t.Errorf("Unable to read the file from disk, got %v want nil", err)
-		}
+		runTestWithTemporaryObject(&object, `asc`, func() {
+			if obj, err := s.Read(object.Metadata.Object); err != nil && reflect.DeepEqual(obj, object) {
+				t.Errorf("Unable to read the file from disk, got %v want nil", err)
+			}
+		})
 	})
 
 	t.Run("Reading a non-existent file should return an error.", func(t *testing.T) {
@@ -100,7 +109,7 @@ func TestStoreRead(t *testing.T) {
 		}
 	})
 
-	t.Run("Attempt to read an unknown mimetype.", func(t *testing.T) {
+	t.Run("Attempt to read an unknown mimetype should return an error.", func(t *testing.T) {
 
 	})
 }
