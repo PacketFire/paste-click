@@ -16,7 +16,7 @@ const (
 )
 
 var (
-	UnusedObjectStoragePath         = fmt.Sprintf("%s%s", testingBasePath, "abcdef.txt")
+	UnusedObjectStoragePath         = fmt.Sprintf("%s%s", testingBasePath, "abcdef.asc")
 	UnusedObjectMetadataStoragePath = fmt.Sprintf("%s%s", testingBasePath, "_abcdef")
 	UnusedObject                    = objectstore.Object{
 		Metadata: objectstore.Metadata{

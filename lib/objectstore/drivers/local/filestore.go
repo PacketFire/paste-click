@@ -2,7 +2,9 @@ package local
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"mime"
 	"path/filepath"
 
 	"github.com/PacketFire/paste-click/lib/objectstore"
@@ -40,6 +42,24 @@ func (s *Store) readMetadata(id objectstore.ObjectID) (*objectstore.Metadata, er
 	return md, nil
 }
 
+// readData attempts to read a binary array of data from a disk location
+func (s *Store) readData(id objectstore.ObjectID, mimetype string) ([]byte, error) {
+	extension, err := mime.ExtensionsByType(mimetype)
+	if err != nil {
+		return []byte{}, err
+	} else if len(extension) == 0 {
+		return []byte{}, fmt.Errorf("unknown mimetype extension for %s", mimetype)
+	}
+
+	path := filepath.Join(s.BasePath, string(id)+extension[0])
+	data, err := ioutil.ReadFile(path)
+	if err != nil {
+		return []byte{}, err
+	}
+
+	return data, nil
+}
+
 // Read takes an ObjectID as an argument and attempts to read the corresponding
 // file from the filesystem. On success, a file is returned. On failure an
 // error is returned with a nil Object pointer.
@@ -49,8 +69,14 @@ func (s *Store) Read(id objectstore.ObjectID) (*objectstore.Object, error) {
 		return nil, err
 	}
 
+	data, err := s.readData(id, metadata.Mimetype)
+	if err != nil {
+		return nil, err
+	}
+
 	return &objectstore.Object{
 		Metadata: *metadata,
+		Data:     data,
 	}, nil
 }
 
