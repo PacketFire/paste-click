@@ -84,7 +84,29 @@ func (s *Store) Read(id objectstore.ObjectID) (*objectstore.Object, error) {
 // correctly written to disk, nil is returned. Otherwise an error is returned
 // providing why the Object could not be correctly written.
 func (s *Store) Write(obj *objectstore.Object) error {
+	extension, err := mime.ExtensionsByType(obj.Metadata.Mimetype)
+	if err != nil {
+		return err
+	} else if len(extension) == 0 {
+		return fmt.Errorf("unknown mimetype extension for %s", obj.Metadata.Mimetype)
+	}
+	// set file and metadata paths
+	dataPath := filepath.Join(BasePath, string(obj.Metadata.Object)+extension[0])
+	metadataPath := filepath.Join(BasePath, "_"+string(obj.Metadata.Object))
+
+	err = ioutil.WriteFile(dataPath, obj.Data, 0644)
+	if err != nil {
+		return err
+	}
+
+	metadata, _ := obj.Metadata.JSON()
+	err = ioutil.WriteFile(metadataPath, metadata, 0644)
+	if err != nil {
+		return err
+	}
+
 	return nil
+
 }
 
 // Close returns nil to comply with the FileStore interface.
