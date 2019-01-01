@@ -16,9 +16,9 @@ const (
 )
 
 var (
-	UnusedObjectStoragePath         = fmt.Sprintf("%s%s", testingBasePath, "abcdef.asc")
-	UnusedObjectMetadataStoragePath = fmt.Sprintf("%s%s", testingBasePath, "_abcdef")
-	UnusedObject                    = objectstore.Object{
+	ObjectStoragePath         = fmt.Sprintf("%s%s", testingBasePath, "abcdef.asc")
+	ObjectMetadataStoragePath = fmt.Sprintf("%s%s", testingBasePath, "_abcdef")
+	Object                    = objectstore.Object{
 		Metadata: objectstore.Metadata{
 			Size:     10,
 			Mimetype: "text/plain",
@@ -61,26 +61,26 @@ func TestStoreRead(t *testing.T) {
 	defer s.Close()
 
 	t.Run("Should be able to read a file.", func(t *testing.T) {
-		err := ioutil.WriteFile(UnusedObjectStoragePath, UnusedObject.Data, 0644)
+		err := ioutil.WriteFile(ObjectStoragePath, Object.Data, 0644)
 		if err != nil {
-			t.Errorf("Unable to write temporary file, %v.", UnusedObjectStoragePath)
+			t.Errorf("Unable to write temporary file, %v.", ObjectStoragePath)
 		}
-		defer os.Remove(UnusedObjectStoragePath)
+		defer os.Remove(ObjectStoragePath)
 
-		metadata, _ := UnusedObject.Metadata.JSON()
-		err = ioutil.WriteFile(UnusedObjectMetadataStoragePath, metadata, 0644)
+		metadata, _ := Object.Metadata.JSON()
+		err = ioutil.WriteFile(ObjectMetadataStoragePath, metadata, 0644)
 		if err != nil {
-			t.Errorf("Unable to write temporary metadata file, %v.", UnusedObjectMetadataStoragePath)
+			t.Errorf("Unable to write temporary metadata file, %v.", ObjectMetadataStoragePath)
 		}
-		defer os.Remove(UnusedObjectMetadataStoragePath)
+		defer os.Remove(ObjectMetadataStoragePath)
 
-		if obj, err := s.Read(UnusedObject.Metadata.Object); err != nil || obj == nil {
+		if obj, err := s.Read(Object.Metadata.Object); err != nil && reflect.DeepEqual(obj, Object) {
 			t.Errorf("Unable to read the file from disk, got %v want nil", err)
 		}
 	})
 
 	t.Run("Reading a non-existent file should return an error.", func(t *testing.T) {
-		if _, err := s.Read(UnusedObject.Metadata.Object); err == nil {
+		if _, err := s.Read(Object.Metadata.Object); err == nil {
 			t.Error("File doesn't exist and should error, got nil want error")
 		}
 	})
@@ -88,11 +88,11 @@ func TestStoreRead(t *testing.T) {
 	t.Run("Invalid json in metadata file should return an error.", func(t *testing.T) {
 		metadata := []byte(`{"hello: "world}`)
 
-		err := ioutil.WriteFile(UnusedObjectMetadataStoragePath, metadata, 0644)
+		err := ioutil.WriteFile(ObjectMetadataStoragePath, metadata, 0644)
 		if err != nil {
-			t.Errorf("Unable to write temporary metadata file, %v.", UnusedObjectMetadataStoragePath)
+			t.Errorf("Unable to write temporary metadata file, %v.", ObjectMetadataStoragePath)
 		}
-		defer os.Remove(UnusedObjectMetadataStoragePath)
+		defer os.Remove(ObjectMetadataStoragePath)
 		if _, err := s.Read(`abcdef`); err == nil {
 			t.Error("Invalid json should throw an error, got nil want error")
 		}
@@ -104,7 +104,7 @@ func TestStoreWrite(t *testing.T) {
 	defer s.Close()
 
 	t.Run("an unallocated ID should successfully write", func(t *testing.T) {
-		if err := s.Write(&UnusedObject); err != nil {
+		if err := s.Write(&Object); err != nil {
 			t.Errorf("Unable to write the file to disk, got %v want nil", err)
 		}
 	})
