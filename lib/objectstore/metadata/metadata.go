@@ -1,4 +1,4 @@
-package objectstore
+package metadata
 
 import (
 	"encoding/json"

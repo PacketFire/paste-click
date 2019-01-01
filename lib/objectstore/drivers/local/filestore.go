@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/PacketFire/paste-click/lib/objectstore"
+	"github.com/PacketFire/paste-click/lib/objectstore/metadata"
 	"github.com/PacketFire/paste-click/lib/objectstore/objectid"
 	"github.com/caarlos0/env"
 )
@@ -26,8 +27,8 @@ func (s *Store) Init() error {
 // readMetadata takes an object ID and attempts to read the metadata for a file.
 // On success a pointer to metadata is returned. On fail nil and a corresponding
 // error is returned.
-func (s *Store) readMetadata(id objectid.ObjectID) (*objectstore.Metadata, error) {
-	md := &objectstore.Metadata{}
+func (s *Store) readMetadata(id objectid.ObjectID) (*metadata.Metadata, error) {
+	md := &metadata.Metadata{}
 	mdPath := filepath.Join(s.BasePath, "_"+string(id))
 	rawMdData, err := ioutil.ReadFile(mdPath)
 	if err != nil {

@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/PacketFire/paste-click/lib/objectstore"
+	"github.com/PacketFire/paste-click/lib/objectstore/metadata"
 	"github.com/PacketFire/paste-click/lib/objectstore/objectid"
 )
 
@@ -24,7 +25,7 @@ func initializeStoreForTesting() Store {
 
 func generateObject(objectID, mimetype, data string) objectstore.Object {
 	return objectstore.Object{
-		Metadata: objectstore.Metadata{
+		Metadata: metadata.Metadata{
 			Size:     int64(len(data)),
 			Mimetype: mimetype,
 			Uploaded: time.Now().String(),
