@@ -10,7 +10,7 @@ ENV APP_NAME=paste-click
 COPY . /go/src/${SCM_PROVIDER}/${GIT_USER}/${APP_NAME}/
 
 RUN cd ${GOPATH} && \
-    apk add --no-cache libmagic gcc libc-dev file-dev && \
+    apk add --no-cache gcc libc-dev file-dev && \
     go build -o /${APP_NAME} ${SCM_PROVIDER}/${GIT_USER}/${APP_NAME}
 
 FROM $BASEIMG
@@ -21,8 +21,7 @@ ENV SERVICE_USER "paste-click"
 ENV APP_NAME=paste-click
 
 RUN addgroup ${SERVICE_USER} && \
-    adduser -D -G ${SERVICE_USER} ${SERVICE_USER} && \
-    apk add --no-cache libmagic
+    adduser -D -G ${SERVICE_USER} ${SERVICE_USER}
 
 COPY --from=builder /${APP_NAME} /opt/${APP_NAME}/bin/
 
