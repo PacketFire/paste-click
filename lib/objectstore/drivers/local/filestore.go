@@ -2,7 +2,6 @@ package local
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"mime"
 	"path/filepath"
@@ -44,14 +43,8 @@ func (s *Store) readMetadata(id objectstore.ObjectID) (*objectstore.Metadata, er
 
 // readData attempts to read a binary array of data from a disk location
 func (s *Store) readData(id objectstore.ObjectID, mimetype string) ([]byte, error) {
-	extension, err := mime.ExtensionsByType(mimetype)
-	if err != nil {
-		return []byte{}, err
-	} else if len(extension) == 0 {
-		return []byte{}, fmt.Errorf("unknown mimetype extension for %s", mimetype)
-	}
-
-	path := filepath.Join(s.BasePath, string(id)+extension[0])
+	extension := s.getExtensionFromMimetype(mimetype)
+	path := filepath.Join(s.BasePath, string(id)+extension)
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		return []byte{}, err
@@ -97,17 +90,13 @@ func (s *Store) Read(id objectstore.ObjectID) (*objectstore.Object, error) {
 // correctly written to disk, nil is returned. Otherwise an error is returned
 // providing why the Object could not be correctly written.
 func (s *Store) Write(obj *objectstore.Object) error {
-	extension, err := mime.ExtensionsByType(obj.Metadata.Mimetype)
-	if err != nil {
-		return err
-	} else if len(extension) == 0 {
-		return fmt.Errorf("unknown mimetype extension for %s", obj.Metadata.Mimetype)
-	}
+	extension := s.getExtensionFromMimetype(obj.Metadata.Mimetype)
+
 	// set file and metadata paths
-	dataPath := filepath.Join(BasePath, string(obj.Metadata.Object)+extension[0])
+	dataPath := filepath.Join(BasePath, string(obj.Metadata.Object)+extension)
 	metadataPath := filepath.Join(BasePath, "_"+string(obj.Metadata.Object))
 
-	err = ioutil.WriteFile(dataPath, obj.Data, 0644)
+	err := ioutil.WriteFile(dataPath, obj.Data, 0644)
 	if err != nil {
 		return err
 	}
