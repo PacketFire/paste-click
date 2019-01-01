@@ -110,7 +110,12 @@ func TestStoreRead(t *testing.T) {
 	})
 
 	t.Run("Attempt to read an unknown mimetype should return an error.", func(t *testing.T) {
-
+		invalidObject := generateObject(`invalidobjecttest`, `text/invalidmimetype1234`, `helloworld`)
+		runTestWithTemporaryObject(&invalidObject, "invalid", func() {
+			if _, err := s.Read(`invalidobjecttest`); err == nil {
+				t.Error(`An invalid mimetype should return an error, got nil want an "unknown mimetype extension" error`)
+			}
+		})
 	})
 }
 
