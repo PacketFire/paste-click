@@ -15,10 +15,10 @@ type Metadata struct {
 	Object   objectid.ObjectID `json:"object"`
 }
 
-// NewMetadata instantiates takes the size, mimetype and object ID as arguments
+// New instantiates takes the size, mimetype and object ID as arguments
 // and uses this to instantiate a new instance of Metadata, returning a pointer
 // to it.
-func NewMetadata(size int64, mime string, object objectid.ObjectID) *Metadata {
+func New(size int64, mime string, object objectid.ObjectID) *Metadata {
 	return &Metadata{
 		Size:     size,
 		Mimetype: mime,
