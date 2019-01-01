@@ -60,6 +60,19 @@ func (s *Store) readData(id objectstore.ObjectID, mimetype string) ([]byte, erro
 	return data, nil
 }
 
+// getExtensionFromMimetype takes a mimetype as a string and attempts to return
+// the first valid extension of the file. If there is no valid extension, an
+// empty string is returned.
+func (s *Store) getExtensionFromMimetype(mimetype string) string {
+	extension, err := mime.ExtensionsByType(mimetype)
+	if err != nil {
+		return ""
+	} else if len(extension) == 0 {
+		return ""
+	}
+	return extension[0]
+}
+
 // Read takes an ObjectID as an argument and attempts to read the corresponding
 // file from the filesystem. On success, a file is returned. On failure an
 // error is returned with a nil Object pointer.
