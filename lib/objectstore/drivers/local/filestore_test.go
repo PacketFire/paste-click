@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/PacketFire/paste-click/lib/objectstore"
+	"github.com/PacketFire/paste-click/lib/objectstore/objectid"
 )
 
 const (
@@ -27,7 +28,7 @@ func generateObject(objectID, mimetype, data string) objectstore.Object {
 			Size:     int64(len(data)),
 			Mimetype: mimetype,
 			Uploaded: time.Now().String(),
-			Object:   objectstore.ObjectID(objectID),
+			Object:   objectid.ObjectID(objectID),
 		},
 		Data: []byte(data),
 	}

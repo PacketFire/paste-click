@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/PacketFire/paste-click/lib/objectstore"
+	"github.com/PacketFire/paste-click/lib/objectstore/objectid"
 	"github.com/caarlos0/env"
 )
 
@@ -25,7 +26,7 @@ func (s *Store) Init() error {
 // readMetadata takes an object ID and attempts to read the metadata for a file.
 // On success a pointer to metadata is returned. On fail nil and a corresponding
 // error is returned.
-func (s *Store) readMetadata(id objectstore.ObjectID) (*objectstore.Metadata, error) {
+func (s *Store) readMetadata(id objectid.ObjectID) (*objectstore.Metadata, error) {
 	md := &objectstore.Metadata{}
 	mdPath := filepath.Join(s.BasePath, "_"+string(id))
 	rawMdData, err := ioutil.ReadFile(mdPath)
@@ -42,7 +43,7 @@ func (s *Store) readMetadata(id objectstore.ObjectID) (*objectstore.Metadata, er
 }
 
 // readData attempts to read a binary array of data from a disk location
-func (s *Store) readData(id objectstore.ObjectID, mimetype string) ([]byte, error) {
+func (s *Store) readData(id objectid.ObjectID, mimetype string) ([]byte, error) {
 	extension := s.getExtensionFromMimetype(mimetype)
 	path := filepath.Join(s.BasePath, string(id)+extension)
 	data, err := ioutil.ReadFile(path)
@@ -69,7 +70,7 @@ func (s *Store) getExtensionFromMimetype(mimetype string) string {
 // Read takes an ObjectID as an argument and attempts to read the corresponding
 // file from the filesystem. On success, a file is returned. On failure an
 // error is returned with a nil Object pointer.
-func (s *Store) Read(id objectstore.ObjectID) (*objectstore.Object, error) {
+func (s *Store) Read(id objectid.ObjectID) (*objectstore.Object, error) {
 	metadata, err := s.readMetadata(id)
 	if err != nil {
 		return nil, err
@@ -93,8 +94,8 @@ func (s *Store) Write(obj *objectstore.Object) error {
 	extension := s.getExtensionFromMimetype(obj.Metadata.Mimetype)
 
 	// set file and metadata paths
-	dataPath := filepath.Join(BasePath, string(obj.Metadata.Object)+extension)
-	metadataPath := filepath.Join(BasePath, "_"+string(obj.Metadata.Object))
+	dataPath := filepath.Join(s.BasePath, string(obj.Metadata.Object)+extension)
+	metadataPath := filepath.Join(s.BasePath, "_"+string(obj.Metadata.Object))
 
 	err := ioutil.WriteFile(dataPath, obj.Data, 0644)
 	if err != nil {
