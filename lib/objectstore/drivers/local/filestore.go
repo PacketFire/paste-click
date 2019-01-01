@@ -108,7 +108,6 @@ func (s *Store) Write(obj *objectstore.Object) error {
 	}
 
 	return nil
-
 }
 
 // Close returns nil to comply with the FileStore interface.
