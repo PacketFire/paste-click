@@ -7,7 +7,7 @@ env:
   - GO111MODULE=on
 
 before_install:
-  - sudo apt-get install -y libmagic-dev gcc make
+  - sudo apt-get install -y gcc make
 
 script:
   - make test
