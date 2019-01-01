@@ -13,22 +13,21 @@ import (
 )
 
 func main() {
-	var router http.Handler
 	c := cs.New()
 
 	mux := mux.NewRouter()
 	mux.HandleFunc(`/healthcheck`, healthHandler).Methods("GET")
 	mux.HandleFunc(`/`, uploadHandler).Methods("POST")
-	router = mux
 
 	if c.Logging {
 		// standard logger
 		sl := log.New(os.Stderr, "", log.LstdFlags)
-		router = logging.New(sl, router)
+		loggingMiddleware := logging.New(sl)
+		mux.Use(loggingMiddleware.Serve)
 	}
 
 	log.Printf("Starting server on %s\n", c.Addr)
-	if err := http.ListenAndServe(c.Addr, router); err != nil {
+	if err := http.ListenAndServe(c.Addr, mux); err != nil {
 		log.Fatalf("Error in ListenAndServe: %s", err)
 	}
 }

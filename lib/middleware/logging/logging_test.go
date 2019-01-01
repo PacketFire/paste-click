@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/gorilla/mux"
 )
 
 func TestLoggerReturnsCorrectFormat(t *testing.T) {
@@ -14,14 +16,18 @@ func TestLoggerReturnsCorrectFormat(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
+	router := mux.NewRouter()
+
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {}).Methods("GET")
 	rr := httptest.NewRecorder()
 
 	logBuffer := new(bytes.Buffer)
 	sl := log.New(logBuffer, "", log.LstdFlags)
-	handler := New(sl, testHandler)
+	middleware := New(sl)
 
-	handler.ServeHTTP(rr, req)
+	router.Use(middleware.Serve)
+
+	router.ServeHTTP(rr, req)
 
 	if !bytes.Contains(logBuffer.Bytes(), []byte("GET /")) {
 		t.Error(`Log should contain: "GET /"`)
