@@ -5,9 +5,6 @@ import (
 	"time"
 )
 
-// ObjectID contains the string representation of an objects identifier.
-type ObjectID string
-
 // Metadata stores file specific data for individual pastes.
 type Metadata struct {
 	Size     int64    `json:"size"`
