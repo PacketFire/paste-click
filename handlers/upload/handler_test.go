@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/PacketFire/paste-click/lib/objectstore/drivers/mock"
 )
 
 func handlerTest(method, path string, reqBody io.Reader, respCode int, respBody string, h http.HandlerFunc) error {
@@ -38,7 +40,8 @@ func handlerTest(method, path string, reqBody io.Reader, respCode int, respBody 
 }
 
 func TestBuiltInRoutes(t *testing.T) {
-	uh := New()
+	store := &mock.Store{}
+	uh := New(store)
 	t.Run("Upload handler returns the correct response", func(t *testing.T) {
 		err := handlerTest("POST", "/", nil, http.StatusOK, ``, uh.ServeHTTP)
 		if err != nil {

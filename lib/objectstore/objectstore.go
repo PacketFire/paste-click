@@ -1,6 +1,8 @@
 package objectstore
 
-import "github.com/PacketFire/paste-click/lib/objectstore/objectid"
+import (
+	"github.com/PacketFire/paste-click/lib/objectstore/objectid"
+)
 
 // ObjectStore provides the interface for persisting files posted to the api.
 type ObjectStore interface {
