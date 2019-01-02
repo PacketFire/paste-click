@@ -8,8 +8,9 @@ import (
 
 var (
 	wantedConfig = Config{
-		Addr:    ":8080",
-		Logging: true,
+		Addr:          ":8080",
+		Logging:       true,
+		StorageDriver: "local",
 	}
 )
 

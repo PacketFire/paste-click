@@ -7,8 +7,9 @@ import (
 // Config retrieves config from env vars that are specific to the
 // server.
 type Config struct {
-	Addr    string `env:"ADDR" envDefault:":8001"`
-	Logging bool   `env:"LOGGING" envDefault:"true"`
+	Addr          string `env:"ADDR" envDefault:":8001"`
+	Logging       bool   `env:"LOGGING" envDefault:"true"`
+	StorageDriver string `env:"STORAGE_DRIVER" envDefault:"local"`
 }
 
 // New instantiates a new Config and attempts to parse parameters from
