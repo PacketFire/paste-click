@@ -4,6 +4,9 @@ import (
 	"log"
 	"os"
 
+	"github.com/PacketFire/paste-click/handlers/health"
+	"github.com/PacketFire/paste-click/handlers/upload"
+
 	"net/http"
 
 	cs "github.com/PacketFire/paste-click/lib/config/service"
@@ -15,9 +18,13 @@ import (
 func main() {
 	c := cs.New()
 
+	// Router and health check handler
 	mux := mux.NewRouter()
-	mux.HandleFunc(`/healthcheck`, healthHandler).Methods("GET")
-	mux.HandleFunc(`/`, uploadHandler).Methods("POST")
+	mux.HandleFunc(`/healthcheck`, health.Handler).Methods("GET")
+
+	// Setup Upload handling
+	uh := upload.New()
+	mux.Handle(`/`, uh).Methods("POST")
 
 	if c.Logging {
 		// standard logger

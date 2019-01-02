@@ -1,4 +1,4 @@
-package main
+package health
 
 import (
 	"fmt"
@@ -39,14 +39,7 @@ func handlerTest(method, path string, reqBody io.Reader, respCode int, respBody 
 
 func TestBuiltInRoutes(t *testing.T) {
 	t.Run("Health handler returns the correct response", func(t *testing.T) {
-		err := handlerTest("GET", "/health", nil, http.StatusOK, `{"status": "Ok"}`, healthHandler)
-		if err != nil {
-			t.Error(err)
-		}
-	})
-
-	t.Run("Upload handler returns the correct response", func(t *testing.T) {
-		err := handlerTest("POST", "/", nil, http.StatusOK, ``, uploadHandler)
+		err := handlerTest("GET", "/health", nil, http.StatusOK, `{"status": "Ok"}`, Handler)
 		if err != nil {
 			t.Error(err)
 		}
