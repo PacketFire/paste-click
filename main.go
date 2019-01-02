@@ -22,9 +22,9 @@ import (
 // corresponding driver if there is no match, nil is returned.
 func store(driverName string) objectstore.ObjectStore {
 	switch driverName {
-	case `mock`:
-		return &local.Store{}
 	case `local`:
+		return &local.Store{}
+	case `mock`:
 		return &mock.Store{}
 	default:
 		return nil

@@ -1,7 +1,9 @@
 package upload
 
 import (
+	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"github.com/PacketFire/paste-click/lib/objectstore"
 )
@@ -22,7 +24,29 @@ func New(store objectstore.ObjectStore) *Handler {
 
 // ServeHTTP implements the http.Handler interface for serving responses.
 func (uh *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	//		write := savePost(w, r)
-	//		w.Write(write)
-	return
+	contentType := r.Header.Get("Content-type")
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Unable to read post body.", http.StatusInternalServerError)
+	}
+
+	if len(body) == 0 {
+		http.Error(w, "Content body cannot be empty", http.StatusBadRequest)
+	}
+
+	scheme := r.Header.Get("X-Scheme")
+	if scheme == "" {
+		scheme = "http"
+	}
+
+	obj := objectstore.New(contentType, body)
+	id := string(obj.Metadata.Object)
+
+	err = uh.StorageDriver.Write(obj)
+	if err != nil {
+		http.Error(w, "Unable to save object", http.StatusInternalServerError)
+	}
+
+	fileURL := strings.Join([]string{scheme, "://", r.Host, r.RequestURI, id, "\n"}, "")
+	w.Write([]byte(fileURL))
 }
