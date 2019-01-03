@@ -8,7 +8,7 @@ COPY . /go/
 
 RUN cd /go/ && \
     unset GOPATH && \
-    apk add --no-cache git gcc libc-dev file-dev && \
+    apk add --no-cache git gcc libmagic libc-dev file-dev && \
     go build -o /${APP_NAME} 
 
 FROM $BASEIMG
@@ -19,7 +19,8 @@ ENV SERVICE_USER "paste-click"
 ENV APP_NAME=paste-click
 
 RUN addgroup ${SERVICE_USER} && \
-    adduser -D -G ${SERVICE_USER} ${SERVICE_USER}
+    adduser -D -G ${SERVICE_USER} ${SERVICE_USER} && \
+    apk add --no-cache libmagic
 
 COPY --from=builder /${APP_NAME} /opt/${APP_NAME}/bin/
 
