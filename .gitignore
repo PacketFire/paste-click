@@ -2,4 +2,4 @@
 *.swp
 
 vendor/
-glide.lock
+.vscode/

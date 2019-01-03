@@ -19,16 +19,17 @@ services:
     depends_on:
       - backend
   backend:
-    image: ncatelli/golang:1.9.2-libmagic
+    image: packetfire/pasteclick
     build:
       context: ./
-    command: bash -c "go install github.com/Packetfire/paste-click && ./bin/paste-click"
+    command: /opt/bin/paste-click
     environment:
-      GOPATH: '/go'
-      PASTE_CLICK_BINDADDR: '0.0.0.0'
+      ADDR: ':8001'
+      STORAGE_DRIVER: 'fs'
+      STORE_FS_BASE_PATH: "/www/paste.click/"
+    ports:
+      - 8001:8001
     volumes:
-      - .:/go/src/github.com/Packetfire/paste-click
-      - ./vendor:/go/src/github.com/Packetfire/paste-click/vendor
       - content:/www/paste.click/
     networks:
       - backend

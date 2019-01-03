@@ -1,0 +1,12 @@
+hash: 2c642ff7b44440292f11e7244843c306d6388f2c63ea1fcc6b8c2527d4d8dc23
+updated: 2018-12-15T20:17:15.675309129-05:00
+imports:
+- name: github.com/caarlos0/env
+  version: 518fcfb943252f77846f92ce5794086d9cb4a1b5
+- name: github.com/gorilla/context
+  version: 51ce91d2eaddeca0ef29a71d766bb3634dadf729
+- name: github.com/gorilla/mux
+  version: e3702bed27f0d39777b0b37b664b6280e8ef8fbf
+- name: github.com/rakyll/magicmime
+  version: 9b99294d6b2216897632b9734769d8ce4568681e
+testImports: []
