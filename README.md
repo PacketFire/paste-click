@@ -25,14 +25,14 @@ $> make build-docker
 ### Locally
 The tool can also be built and installed locally by running a pip install from the root of the project.
 
-```
+```sh
 $> make build
 ```
 
 ## Testing
 Testing is done using the stdlib testing package and full unit tests can be run with the following command.
 
-```
+```sh
 $> make test
 ```
 
