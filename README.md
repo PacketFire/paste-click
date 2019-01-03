@@ -74,3 +74,21 @@ Accept-Ranges: bytes
 
 hello
 ```
+
+## Configuration
+Configuration parameters are provided via environment variables. Currently the following parameters can be set.
+
+- ADDR: ':8080'
+
+  The bind address for the service
+
+- LOGGING: 'true'
+
+  A boolean value determining whether to enable logging of requests to stdout.
+
+- STORAGE_DRIVER: 'fs'
+
+  The backend storage driver to use. Currently there are only two, mock and fs.
+- STORE_FS_BASE_PATH: "/www/paste.click/"
+
+  The base path of the to store files under. This should always point to the document root of openresty.
