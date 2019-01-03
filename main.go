@@ -12,7 +12,7 @@ import (
 	cs "github.com/PacketFire/paste-click/lib/config/service"
 	"github.com/PacketFire/paste-click/lib/middleware/logging"
 	"github.com/PacketFire/paste-click/lib/objectstore"
-	"github.com/PacketFire/paste-click/lib/objectstore/drivers/local"
+	"github.com/PacketFire/paste-click/lib/objectstore/drivers/fs"
 	"github.com/PacketFire/paste-click/lib/objectstore/drivers/mock"
 
 	"github.com/gorilla/mux"
@@ -22,8 +22,8 @@ import (
 // corresponding driver if there is no match, nil is returned.
 func store(driverName string) objectstore.ObjectStore {
 	switch driverName {
-	case `local`:
-		return &local.Store{}
+	case `fs`:
+		return &fs.Store{}
 	case `mock`:
 		return &mock.Store{}
 	default:

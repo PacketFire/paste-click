@@ -1,4 +1,4 @@
-package local
+package fs
 
 import (
 	"encoding/json"
@@ -16,10 +16,10 @@ import (
 // filesystem.
 type Store struct {
 	// the base path for reading and writing objects to.
-	BasePath string `env:"STORE_LOCAL_BASE_PATH,required"`
+	BasePath string `env:"STORE_FS_BASE_PATH,required"`
 }
 
-// Init initializes the local store.
+// Init initializes the fs store.
 func (s *Store) Init() error {
 	return env.Parse(s)
 }

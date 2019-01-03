@@ -9,7 +9,7 @@ import (
 type Config struct {
 	Addr          string `env:"ADDR" envDefault:":8001"`
 	Logging       bool   `env:"LOGGING" envDefault:"true"`
-	StorageDriver string `env:"STORAGE_DRIVER" envDefault:"local"`
+	StorageDriver string `env:"STORAGE_DRIVER" envDefault:"fs"`
 }
 
 // New instantiates a new Config and attempts to parse parameters from

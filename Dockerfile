@@ -27,8 +27,7 @@ COPY --from=builder /${APP_NAME} /opt/${APP_NAME}/bin/
 RUN chown -R ${SERVICE_USER}:${SERVICE_USER} /opt/${APP_NAME} && \
     chmod +x /opt/${APP_NAME}/bin/${APP_NAME}
 
-WORKDIR "/opt/$APP_NAME/"
-#USER ${SERVICE_USER}
+WORKDIR /opt/${APP_NAME}/
 
 ENTRYPOINT [ "/opt/paste-click/bin/paste-click" ]
 CMD [ "-h" ]

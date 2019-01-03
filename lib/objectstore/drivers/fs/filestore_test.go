@@ -1,4 +1,4 @@
-package local
+package fs
 
 import (
 	"io/ioutil"
@@ -56,8 +56,8 @@ func runTestWithTemporaryObject(obj *objectstore.Object, extension string, callb
 }
 
 func TestInit(t *testing.T) {
-	os.Setenv("STORE_LOCAL_BASE_PATH", BasePath)
-	defer os.Unsetenv("STORE_LOCAL_BASE_PATH")
+	os.Setenv("STORE_FS_BASE_PATH", BasePath)
+	defer os.Unsetenv("STORE_FS_BASE_PATH")
 
 	expectedStore := Store{
 		BasePath: BasePath,
