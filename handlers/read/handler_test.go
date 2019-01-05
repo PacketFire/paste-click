@@ -1,4 +1,4 @@
-package get
+package read
 
 import (
 	"fmt"

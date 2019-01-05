@@ -1,4 +1,4 @@
-package get
+package read
 
 import (
 	"github.com/PacketFire/paste-click/lib/objectstore/objectid"
@@ -7,13 +7,13 @@ import (
 	"net/http"
 )
 
-// Handler stores all required context for handing off  requests to a
+// Handler stores all required context for handing off requests to a
 // storage driver.
 type Handler struct {
 	StorageDriver objectstore.ObjectStore
 }
 
-// New instantiates a new get Handler.
+// New instantiates a new read Handler.
 func New(store objectstore.ObjectStore) *Handler {
 	store.Init()
 	return &Handler{

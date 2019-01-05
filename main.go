@@ -40,6 +40,8 @@ func main() {
 	mux.HandleFunc(`/healthcheck`, health.Handler).Methods("GET")
 
 	s := store(c.StorageDriver)
+	defer s.Close()
+
 	// Setup Upload handling
 	uh := upload.New(s)
 	mux.Handle(`/`, uh).Methods("POST")
