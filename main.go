@@ -6,6 +6,7 @@ import (
 
 	"github.com/PacketFire/paste-click/handlers/health"
 	"github.com/PacketFire/paste-click/handlers/upload"
+	"github.com/PacketFire/paste-click/handlers/get"
 
 	"net/http"
 
@@ -42,6 +43,10 @@ func main() {
 	// Setup Upload handling
 	uh := upload.New(s)
 	mux.Handle(`/`, uh).Methods("POST")
+
+	// Setup Get handling
+	gh := get.New(s)
+	mux.Handle(`/{objectid}`, gh).Methods("GET")
 
 	if c.Logging {
 		// standard logger
