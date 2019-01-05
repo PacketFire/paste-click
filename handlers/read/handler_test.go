@@ -1,14 +1,22 @@
 package read
 
 import (
+	"github.com/gorilla/mux"
 	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 
 	"github.com/PacketFire/paste-click/lib/objectstore/drivers/mock"
+	"github.com/PacketFire/paste-click/lib/objectstore"
+)
+
+var (
+	testObject = objectstore.New(
+		"text/plain", 
+		[]byte("hello"),
+	)
 )
 
 func handlerTest(method, path string, reqBody io.Reader, respCode int, respBody string, h http.HandlerFunc) error {
@@ -19,9 +27,11 @@ func handlerTest(method, path string, reqBody io.Reader, respCode int, respBody 
 
 	// We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(h)
 
-	handler.ServeHTTP(rr, req)
+	mux := mux.NewRouter()
+	mux.Handle(`/{objectid}`, h).Methods("GET")
+
+	mux.ServeHTTP(rr, req)
 
 	// Check the status code is what we expect.
 	if status := rr.Code; status != respCode {
@@ -42,11 +52,26 @@ func handlerTest(method, path string, reqBody io.Reader, respCode int, respBody 
 
 func TestBuiltInRoutes(t *testing.T) {
 	store := &mock.Store{}
-	uh := New(store)
+	gh := New(store)
+
+	// Write a test object to the store
+	err := store.Write(testObject)
+	if err != nil {
+		t.Error(err)
+	}
+
+
 	t.Run("Get handler returns the correct response", func(t *testing.T) {
-		err := handlerTest("GET", "/", strings.NewReader(`helloworld`), http.StatusOK, `helloworld`, uh.ServeHTTP)
+		err := handlerTest(
+			"GET", 
+			fmt.Sprintf("/%s", testObject.Metadata.Object),
+			nil, 
+			http.StatusOK, 
+			`hello`,
+			gh.ServeHTTP,
+		)
 		if err != nil {
-			//t.Error(err)
+			t.Error(err)
 		}
 	})
 }
