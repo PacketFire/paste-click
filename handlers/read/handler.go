@@ -25,17 +25,11 @@ func New(store objectstore.ObjectStore) *Handler {
 func (uh *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	rawOID, prs := vars["objectid"]
-	if prs == false {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	oid := objectid.ObjectID(rawOID)
+	oid := objectid.ObjectID(vars["objectid"])
 
 	object, err := uh.StorageDriver.Read(oid)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 

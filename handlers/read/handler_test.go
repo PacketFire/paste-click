@@ -73,4 +73,32 @@ func TestBuiltInRoutes(t *testing.T) {
 			t.Error(err)
 		}
 	})
+
+	t.Run("Missing objectID returns a 404 error", func(t *testing.T) {
+		err := handlerTest(
+			"GET",
+			`/`,
+			nil,
+			http.StatusNotFound,
+			"404 page not found\n",
+			gh.ServeHTTP,
+		)
+		if err != nil {
+			t.Error(err)
+		}
+	})
+
+	t.Run("Undefined object returns a 404 error", func(t *testing.T) {
+		err := handlerTest(
+			"GET",
+			`/thisisatestkey`,
+			nil,
+			http.StatusNotFound,
+			"",
+			gh.ServeHTTP,
+		)
+		if err != nil {
+			t.Error(err)
+		}
+	})
 }
