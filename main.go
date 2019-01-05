@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/PacketFire/paste-click/handlers/health"
-	"github.com/PacketFire/paste-click/handlers/upload"
 	"github.com/PacketFire/paste-click/handlers/read"
+	"github.com/PacketFire/paste-click/handlers/upload"
 
 	"net/http"
 

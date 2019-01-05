@@ -1,20 +1,20 @@
 package read
 
 import (
-	"github.com/gorilla/mux"
 	"fmt"
+	"github.com/gorilla/mux"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	"github.com/PacketFire/paste-click/lib/objectstore/drivers/mock"
 	"github.com/PacketFire/paste-click/lib/objectstore"
+	"github.com/PacketFire/paste-click/lib/objectstore/drivers/mock"
 )
 
 var (
 	testObject = objectstore.New(
-		"text/plain", 
+		"text/plain",
 		[]byte("hello"),
 	)
 )
@@ -62,10 +62,10 @@ func TestBuiltInRoutes(t *testing.T) {
 
 	t.Run("Get handler returns the correct response", func(t *testing.T) {
 		err := handlerTest(
-			"GET", 
+			"GET",
 			fmt.Sprintf("/%s", testObject.Metadata.Object),
-			nil, 
-			http.StatusOK, 
+			nil,
+			http.StatusOK,
 			`hello`,
 			gh.ServeHTTP,
 		)

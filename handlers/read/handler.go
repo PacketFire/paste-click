@@ -1,9 +1,9 @@
 package read
 
 import (
+	"github.com/PacketFire/paste-click/lib/objectstore"
 	"github.com/PacketFire/paste-click/lib/objectstore/objectid"
 	"github.com/gorilla/mux"
-	"github.com/PacketFire/paste-click/lib/objectstore"
 	"net/http"
 )
 
@@ -42,4 +42,3 @@ func (uh *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set(`content-type`, object.Metadata.Mimetype)
 	w.Write(object.Data)
 }
-
