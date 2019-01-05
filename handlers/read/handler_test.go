@@ -60,7 +60,6 @@ func TestBuiltInRoutes(t *testing.T) {
 		t.Error(err)
 	}
 
-
 	t.Run("Get handler returns the correct response", func(t *testing.T) {
 		err := handlerTest(
 			"GET", 
