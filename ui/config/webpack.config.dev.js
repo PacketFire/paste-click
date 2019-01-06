@@ -5,6 +5,12 @@ const webpack = require('webpack');
 module.exports = {
   mode: 'development',
   devtool: 'inline-source-map',
+  devServer: {
+    port: 8090,
+    allowedHosts: [
+      'paste.click'
+    ]
+  },
   entry: [
     './src/app.js'
   ],
@@ -39,7 +45,7 @@ module.exports = {
       template: './public/index.html'
     }),
     new webpack.DefinePlugin({
-      API_URL: JSON.stringify('http://localhost:5050')
+      API_URL: JSON.stringify('http://paste.click:8080')
     })
   ]
 };
