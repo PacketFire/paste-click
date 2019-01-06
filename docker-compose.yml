@@ -7,37 +7,33 @@ services:
       - 8443:443
     volumes:
       - content:/www/paste.click/
-      - frontend_logs:/var/log/nginx
       - ./assets/index.html:/www/paste.click/index.html
       - ./assets/s:/www/paste.click/s
       - ./assets/up:/www/paste.click/up
-      - ./conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
-      - ./conf/paste.click.conf:/usr/local/openresty/nginx/conf/sites-enabled/paste.click.conf:ro
-      - ./conf/ssl:/etc/ssl/nginx:ro
+      - ./resty/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ./resty/paste.click.conf:/usr/local/openresty/nginx/conf/sites-enabled/paste.click.conf:ro
+      - ./resty/lua:/usr/local/openresty/nginx/conf/lua
+      - ./resty/ssl:/etc/ssl/nginx:ro
     networks:
       - backend
     depends_on:
       - backend
   backend:
-    image: ncatelli/golang:1.9.2-libmagic
+    image: packetfire/pasteclick
     build:
       context: ./
-    command:
-      - 'go'
-      - 'run'
-      - 'src/gitlab.packetfire.org/Tiksi/paste-click/pasteclick.go'
+    command: /opt/bin/paste-click
     environment:
-      GOPATH: '/go'
-      PASTE_CLICK_BINDADDR: '0.0.0.0'
+      ADDR: ':8001'
+      STORAGE_DRIVER: 'fs'
+      STORE_FS_BASE_PATH: "/www/paste.click/"
+    ports:
+      - 8001:8001
     volumes:
-      - ./pasteclick.go:/go/src/gitlab.packetfire.org/Tiksi/paste-click/pasteclick.go
-      - ./pasteclick_test.go:/go/src/gitlab.packetfire.org/Tiksi/paste-click/pasteclick_test.go
-      - ./vendor:/go/src/gitlab.packetfire.org/Tiksi/paste-click/vendor
       - content:/www/paste.click/
     networks:
       - backend
 volumes:
   content:
-  frontend_logs:
 networks:
   backend:
