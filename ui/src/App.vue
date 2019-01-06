@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div v-on:drop="drop" v-on:dragover="dragOver" v-on:mouseout="mouseOut">
     <Header></Header>
     
     <main class="main">
-      <h1>Enter Text or Drag and Drop a File</h1>
+      <h2>Enter Text or Drag and Drop a File</h2>
       <Editor></Editor>
 
-      <button class="upload" v-on:click="upload">Upload</button>
+      <button class="paste" v-on:click="upload">Paste</button>
     </main>
   </div>
 </template>
@@ -18,15 +18,47 @@ import Header from './Header.vue';
 import Editor from './Editor.vue';
 
 export default {
+  data() {
+    return {
+      text: ''
+    }
+  },
+  created() {
+    this.$root.$on('editor-change', text => {
+      this.text = text;
+    });
+  },
   methods: {
-    reverseMessage: function() {
-      this.message = this.msg;
-    },
-    upload: function() {
-      console.log(API_URL);
+    drop(e) {
+      e.preventDefault();
       
-      // const text = document.getElementById('editor').value;
-      console.log(text);
+      const files = e.dataTransfer.files;
+      
+      if (files.length === 1) {
+        const file = files[0];
+        axios.post(`${API_URL}`, file)
+          .then(res => {
+            window.location = res.data;
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      }
+    },
+    dragOver(e) {
+      e.preventDefault();
+    },
+    mouseOut(e) {
+      e.preventDefault();
+    },
+    upload() {
+      axios.post(`${API_URL}`, this.text)
+        .then(res => {
+          window.location = res.data;
+        })
+        .catch(err => {
+          console.error(err);
+        });
     }
   },
   components: {
@@ -41,7 +73,8 @@ export default {
   margin: 16px 24px;
 }
 
-.upload {
+.paste {
+  margin-top: 16px;
   padding: 10px 18px;
 
   color: #fff;

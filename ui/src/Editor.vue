@@ -8,9 +8,14 @@
 import CodeMirror from 'codemirror';
 
 export default {
-  mounted: function() {
+  mounted() {
     this.editor = CodeMirror(document.getElementById('editor'), {
       lineNumbers: true
+    });
+
+    this.editor.on('change', cm => {
+      const text = cm.getValue();
+      this.$root.$emit('editor-change', text);
     });
   }
 };
@@ -23,5 +28,11 @@ export default {
   border: 1px solid #ddd;
 
   cursor: text;
+}
+
+@media only screen and (max-width: 900px) {
+  #editor {
+    width: 100%;
+  }
 }
 </style>
