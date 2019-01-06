@@ -25,7 +25,7 @@ export default {
     upload: function() {
       console.log(API_URL);
       
-      const text = document.getElementById('editor').value;
+      // const text = document.getElementById('editor').value;
       console.log(text);
     }
   },

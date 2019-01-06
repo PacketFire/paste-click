@@ -1,5 +1,8 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
+const webpack = require('webpack');
 
 module.exports = {
   mode: 'production',
@@ -8,8 +11,13 @@ module.exports = {
   ],
   output: {
     pathinfo: true,
-    filename: 'static/js/[name].[chunkhash:8].js',
+    filename: 'static/bundle.[chunkhash].js',
     publicPath: '/'
+  },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin()
+    ]
   },
   module: {
     rules: [
@@ -18,16 +26,28 @@ module.exports = {
         use: 'vue-loader'
       },
       {
+        test: /\.js$/,
+        use: 'babel-loader'
+      },
+      {
         test: /\.css$/,
         use: [
-          'vue-style-loader',
-          'css-loader'
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: false
+            }
+          }
         ]
       }
     ]
   },
   plugins: [
     new VueLoaderPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'static/bundle.[chunkhash].css'
+    }),
     new HtmlWebpackPlugin({
       inject: true,
       template: './public/index.html'
