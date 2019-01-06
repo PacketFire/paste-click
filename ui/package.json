@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "normalize.css": "^8.0.1",
     "vue": "^2.5.21"
   },
   "devDependencies": {
@@ -18,6 +19,7 @@
     "css-loader": "^2.1.0",
     "html-webpack-plugin": "^3.2.0",
     "vue-loader": "^15.5.0",
+    "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.5.21",
     "webpack": "^4.28.3",
     "webpack-cli": "^3.2.0",
