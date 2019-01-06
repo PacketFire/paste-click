@@ -11,13 +11,16 @@ module.exports = {
   ],
   output: {
     pathinfo: true,
-    filename: 'static/bundle.[chunkhash].js',
+    filename: 'static/[name].[chunkhash].js',
     publicPath: '/'
   },
   optimization: {
     minimizer: [
       new UglifyJsPlugin()
-    ]
+    ],
+    splitChunks: {
+      chunks: 'all'
+    }
   },
   module: {
     rules: [
@@ -46,7 +49,7 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
-      filename: 'static/bundle.[chunkhash].css'
+      filename: 'static/[name].[chunkhash].css'
     }),
     new HtmlWebpackPlugin({
       inject: true,
