@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "codemirror": "^5.42.2",
     "normalize.css": "^8.0.1",
     "vue": "^2.5.21"
   },
