@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.config.dev.js",
+    "build": "webpack --config config/webpack.config.prod.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
     "codemirror": "^5.42.2",
     "normalize.css": "^8.0.1",
     "vue": "^2.5.21"

@@ -19,6 +19,6 @@ header {
   color: #fff;
 
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 700;
 }
 </style>

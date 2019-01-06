@@ -1,15 +1,14 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
-const webpack = require('webpack');
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: [
     './src/app.js'
   ],
   output: {
     pathinfo: true,
-    filename: 'static/js/bundle.js',
+    filename: 'static/js/[name].[chunkhash:8].js',
     publicPath: '/'
   },
   module: {
@@ -34,7 +33,7 @@ module.exports = {
       template: './public/index.html'
     }),
     new webpack.DefinePlugin({
-      API_URL: JSON.stringify('http://localhost:5050')
+      API_URL: JSON.stringify('http://paste.click')
     })
   ]
 };
