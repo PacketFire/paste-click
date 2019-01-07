@@ -1,0 +1,17 @@
+ARG BASEIMG="openresty/openresty:alpine"
+ARG BUILDIMG="node:10.15.0-alpine"
+FROM $BUILDIMG as builder
+
+COPY . /project/
+
+RUN cd /project/ui/ && \
+    npm install && \
+    npm run build
+
+FROM $BASEIMG
+LABEL maintainer="Nate Catelli <ncatelli@packetfire.org>" \
+      description="Container for paste-click openresty"
+
+ENV APP_NAME=paste.click
+
+COPY --from=builder /project/ui/dist/* /www/${APP_NAME}/vue/
