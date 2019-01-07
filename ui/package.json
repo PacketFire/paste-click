@@ -14,7 +14,8 @@
     "axios": "^0.18.0",
     "codemirror": "^5.42.2",
     "normalize.css": "^8.0.1",
-    "vue": "^2.5.21"
+    "vue": "^2.5.21",
+    "vue-router": "^3.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
