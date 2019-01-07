@@ -33,6 +33,12 @@ func (uh *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Set paste-click metadata headers.
+	w.Header().Set(`pc-mime-type`, object.Metadata.Mimetype)
+	w.Header().Set(`pc-size`, string(object.Metadata.Size))
+	w.Header().Set(`pc-object`, string(object.Metadata.Object))
+	w.Header().Set(`pc-uploaded`, object.Metadata.Uploaded)
+
 	w.Header().Set(`content-type`, object.Metadata.Mimetype)
 	w.Write(object.Data)
 }
