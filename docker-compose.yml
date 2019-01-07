@@ -12,7 +12,6 @@ services:
       - ./assets/up:/www/paste.click/up
       - ./resty/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
       - ./resty/paste.click.conf:/usr/local/openresty/nginx/conf/sites-enabled/paste.click.conf:ro
-      - ./resty/lua:/usr/local/openresty/nginx/conf/lua
       - ./resty/ssl:/etc/ssl/nginx:ro
     networks:
       - backend
