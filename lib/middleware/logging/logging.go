@@ -1,25 +1,22 @@
 package logging
 
 import (
-	"log"
+	"github.com/gorilla/handlers"
+	"io"
 	"net/http"
 )
 
 // Middleware is a middleware handler that does request logging.
 type Middleware struct {
-	logger *log.Logger
+	logDestination io.Writer
+}
+
+// New constructs a new Middleware middleware handler
+func New(l io.Writer) *Middleware {
+	return &Middleware{l}
 }
 
 // Serve implements the MiddleWareFunc type as defined in gorrila/mux.
 func (lm *Middleware) Serve(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		next.ServeHTTP(w, r)
-		lm.logger.Printf("%s %s", r.Method, r.URL.Path)
-
-	})
-}
-
-// New constructs a new Middleware middleware handler
-func New(l *log.Logger) *Middleware {
-	return &Middleware{l}
+	return handlers.LoggingHandler(lm.logDestination, next)
 }

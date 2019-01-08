@@ -2,7 +2,6 @@ package logging
 
 import (
 	"bytes"
-	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -17,19 +16,18 @@ func TestLoggerReturnsCorrectFormat(t *testing.T) {
 	}
 
 	router := mux.NewRouter()
-
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {}).Methods("GET")
-	rr := httptest.NewRecorder()
 
 	logBuffer := new(bytes.Buffer)
-	sl := log.New(logBuffer, "", log.LstdFlags)
-	middleware := New(sl)
+	middleware := New(logBuffer)
 
 	router.Use(middleware.Serve)
 
+	rr := httptest.NewRecorder()
 	router.ServeHTTP(rr, req)
 
 	if !bytes.Contains(logBuffer.Bytes(), []byte("GET /")) {
-		t.Error(`Log should contain: "GET /"`)
+		t.Errorf(`Log doesn't contain expected string got '%s' want 'GET /'`, logBuffer.Bytes())
 	}
 }
+
