@@ -1,6 +1,9 @@
 package gcs
 
 import (
+	"github.com/PacketFire/paste-click/lib/objectstore/metadata"
+	"bytes"
+	"io"
 	"errors"
 
 	"github.com/PacketFire/paste-click/lib/objectstore"
@@ -17,13 +20,13 @@ type Store struct {
 	BucketName string `env:"STORE_GCS_BUCKET_NAME,required"`
 	client *storage.Client
 	bucket *storage.BucketHandle
-	gcsContext context.Context
+	ctx context.Context
 }
 
 // Init initializes the gcs store.
 func (s *Store) Init() error {
-	s.gcsContext = context.Background()
-	client, err := storage.NewClient(s.gcsContext)
+	s.ctx = context.Background()
+	client, err := storage.NewClient(s.ctx)
 	if err != nil {
 		return errors.New("Unable to initialize client")
 	}
@@ -42,7 +45,35 @@ func (s *Store) Init() error {
 // object from the GCS bucket. On success, a file is returned. On failure an
 // error is returned with a nil Object pointer.
 func (s *Store) Read(id objectid.ObjectID) (*objectstore.Object, error) {
-	return nil, nil
+	obj := s.bucket.Object(string(id))
+
+	r, err := obj.NewReader(s.ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer r.Close()
+	
+	bodyBuf := new(bytes.Buffer)
+	if _, err := io.Copy(bodyBuf, r); err != nil {
+		return nil, err
+	}
+
+	attrs, err := obj.Attrs(s.ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	metadata := &metadata.Metadata{
+		Object: id,
+		Mimetype: attrs.ContentType,
+		Uploaded: attrs.Created.String(),
+		Size: attrs.Size,
+	}
+
+	return &objectstore.Object{
+		Metadata: *metadata,
+		Data:     bodyBuf.Bytes(),
+	}, nil
 }
 
 // Write takes an Object pointer as an argument. If the Object can be
