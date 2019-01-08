@@ -1,5 +1,7 @@
 /pasteclick
 *.swp
+paste-click
+
 
 vendor/
 .vscode/
