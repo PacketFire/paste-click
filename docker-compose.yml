@@ -10,6 +10,7 @@ services:
       - 8443:443
     volumes:
       - content:/www/paste.click/
+      - proxy_cache:/data/nginx/cache
       - ./assets/index.html:/www/paste.click/index.html
       - ./assets/s:/www/paste.click/s
       - ./assets/up:/www/paste.click/up
@@ -37,5 +38,6 @@ services:
       - backend
 volumes:
   content:
+  proxy_cache:
 networks:
   backend:
