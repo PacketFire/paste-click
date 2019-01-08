@@ -1,18 +1,21 @@
 version: '3.1'
 services:
   frontend:
-    image: openresty/openresty:alpine
+    image: packetfire/openresty-pasteclick
+    build:
+      context: ./
+      dockerfile: Dockerfile.openresty
     ports:
       - 8080:80
       - 8443:443
     volumes:
       - content:/www/paste.click/
+      - proxy_cache:/data/nginx/cache
       - ./assets/index.html:/www/paste.click/index.html
       - ./assets/s:/www/paste.click/s
       - ./assets/up:/www/paste.click/up
       - ./resty/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
       - ./resty/paste.click.conf:/usr/local/openresty/nginx/conf/sites-enabled/paste.click.conf:ro
-      - ./resty/lua:/usr/local/openresty/nginx/conf/lua
       - ./resty/ssl:/etc/ssl/nginx:ro
     networks:
       - backend
@@ -35,5 +38,6 @@ services:
       - backend
 volumes:
   content:
+  proxy_cache:
 networks:
   backend:
