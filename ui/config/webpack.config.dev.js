@@ -7,6 +7,7 @@ module.exports = {
   devtool: 'inline-source-map',
   devServer: {
     port: 8090,
+    historyApiFallback: true,
     allowedHosts: [
       'paste.click'
     ]
