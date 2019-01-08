@@ -15,8 +15,14 @@ const router = new VueRouter({
   mode: 'history',
   base: '/beta',
   routes: [
-    { path: '/up', component: Up },
-    { path: '/s', component: View }
+    { 
+      path: '/up', 
+      component: Up
+    },
+    { 
+      path: '/s/:objectId', 
+      component: View
+    }
   ]
 });
 

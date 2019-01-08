@@ -1,7 +1,5 @@
 <template>
   <div v-on:drop="drop" v-on:dragover="dragOver" v-on:mouseout="mouseOut">
-    <Header></Header>
-    
     <main class="main">
       <h2>Enter Text or Drag and Drop a File</h2>
       <Editor></Editor>
@@ -14,7 +12,6 @@
 <script>
 import axios from 'axios';
 
-import Header from './Header.vue';
 import Editor from './Editor.vue';
 
 export default {
@@ -62,8 +59,7 @@ export default {
     }
   },
   components: {
-    Editor,
-    Header
+    Editor
   }
 };
 </script>
