@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/PacketFire/paste-click/handlers/health"
+	"github.com/PacketFire/paste-click/handlers/read"
 	"github.com/PacketFire/paste-click/handlers/upload"
 
 	"net/http"
@@ -39,9 +40,15 @@ func main() {
 	mux.HandleFunc(`/healthcheck`, health.Handler).Methods("GET")
 
 	s := store(c.StorageDriver)
+	defer s.Close()
+
 	// Setup Upload handling
 	uh := upload.New(s)
 	mux.Handle(`/`, uh).Methods("POST")
+
+	// Setup read handling
+	gh := read.New(s)
+	mux.Handle(`/{objectid}`, gh).Methods("GET")
 
 	if c.Logging {
 		// standard logger
