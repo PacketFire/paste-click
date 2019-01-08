@@ -45,8 +45,7 @@ func main() {
 
 	if c.Logging {
 		// standard logger
-		sl := log.New(os.Stderr, "", log.LstdFlags)
-		loggingMiddleware := logging.New(sl)
+		loggingMiddleware := logging.New(os.Stdout)
 		mux.Use(loggingMiddleware.Serve)
 	}
 
