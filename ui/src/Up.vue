@@ -1,11 +1,9 @@
 <template>
   <div v-on:drop="drop" v-on:dragover="dragOver" v-on:mouseout="mouseOut">
-    <main class="main">
-      <h2>Enter Text or Drag and Drop a File</h2>
-      <Editor></Editor>
+    <h2>Enter Text or Drag and Drop a File</h2>
+    <Editor></Editor>
 
-      <button class="paste" v-on:click="upload">Paste</button>
-    </main>
+    <button class="paste" v-on:click="upload">Paste</button>
   </div>
 </template>
 
@@ -65,16 +63,12 @@ export default {
 </script>
 
 <style scoped>
-.main {
-  margin: 16px 24px;
-}
-
 .paste {
   margin-top: 16px;
-  padding: 10px 18px;
+  padding: 8px 16px;
 
   color: #fff;
-  font-size: 16px;
+  font-size: 15px;
   font-family: 'Roboto', sans-serif;
   font-weight: 700;
 

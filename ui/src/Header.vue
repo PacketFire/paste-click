@@ -1,7 +1,10 @@
 <template>
   <header>
     <div class="title">
-      paste.click
+      <a class="title-link" href="/">paste.click</a>
+    </div>
+    <div class="links">
+      <a class="paste" href="/up">Paste</a>
     </div>
   </header>
 </template>
@@ -16,9 +19,37 @@ header {
 }
 
 .title {
-  color: #fff;
+  display: inline-block;
+}
 
+.title-link {
+  color: #fff;
   font-size: 20px;
   font-weight: 700;
+  text-decoration: none;
+}
+
+.links {
+  display: inline-block;
+
+  margin-left: 12px;
+}
+
+.paste {
+  padding: 6px 12px;
+
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+
+  background-color: #0389ff;
+
+  outline: 0;
+  border: none;
+  border-radius: 2px;
+
+  cursor: pointer;
 }
 </style>

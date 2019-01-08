@@ -7,15 +7,14 @@ import CodeMirror from 'codemirror';
 
 export default {
   mounted() {
+    console.log(this.text);
     this.editor = CodeMirror(document.getElementById('editor'), {
-      lineNumbers: true
+      value: this.text,
+      lineNumbers: true,
+      readOnly: 'nocursor'
     });
-
-    this.editor.on('change', cm => {
-      const text = cm.getValue();
-      this.$root.$emit('editor-change', text);
-    });
-  }
+  },
+  props: ['text', 'mimeType']
 };
 </script>
 
@@ -26,6 +25,10 @@ export default {
   border: 1px solid #ddd;
 
   cursor: text;
+}
+
+#editor >>> .CodeMirror {
+  height: auto;
 }
 
 @media only screen and (max-width: 900px) {

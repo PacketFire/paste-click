@@ -1,8 +1,9 @@
 <template>
   <div class="app">
     <Header></Header>
-    <div>{{ this.$route.meta.header }}</div>
-    <router-view></router-view>
+    <div class="main">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -21,5 +22,9 @@ export default {
 <style scoped>
 .app {
   width: 100%;
+}
+
+.main {
+  margin: 16px 24px;
 }
 </style>
