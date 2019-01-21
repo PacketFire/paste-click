@@ -1,18 +1,20 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const { VueLoaderPlugin } = require('vue-loader');
 const webpack = require('webpack');
 
 module.exports = {
   mode: 'production',
   entry: [
-    './src/app.js'
+    './src/index.js'
   ],
   output: {
     pathinfo: true,
-    filename: 'static/[name].[chunkhash].js',
+    filename: 'assets/[name].[chunkhash].js',
     publicPath: '/'
+  },
+  resolve: {
+    extensions: ['.js', '.jsx']
   },
   optimization: {
     minimizer: [
@@ -25,31 +27,46 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.vue$/,
-        use: 'vue-loader'
-      },
-      {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         use: 'babel-loader'
       },
       {
         test: /\.css$/,
+        exclude: /(index.css|global.css|node_modules)/,
         use: [
-          MiniCssExtractPlugin.loader,
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
           {
             loader: 'css-loader',
             options: {
-              sourceMap: false
-            }
+              importLoaders: 1,
+              localIdentName: "[name]__[local]___[hash:base64:5]",
+              modules: true,
+            },
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        include: /(index.css|global.css|node_modules)/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1
+            },
           }
         ]
       }
     ]
   },
   plugins: [
-    new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
-      filename: 'static/[name].[chunkhash].css'
+      filename: 'assets/[name].[chunkhash].css'
     }),
     new HtmlWebpackPlugin({
       inject: true,
