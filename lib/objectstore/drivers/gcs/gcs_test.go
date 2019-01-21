@@ -6,27 +6,13 @@ import (
 	"cloud.google.com/go/storage"
 	"context"
 	"github.com/PacketFire/paste-click/lib/objectstore"
-	"github.com/PacketFire/paste-click/lib/objectstore/metadata"
-	"github.com/PacketFire/paste-click/lib/objectstore/objectid"
 	"testing"
-	"time"
+	"bytes"
 )
 
 const (
 	bucketName = `test_bucket`
 )
-
-func generateObject(objectID, mimetype, data string) objectstore.Object {
-	return objectstore.Object{
-		Metadata: metadata.Metadata{
-			Size:     int64(len(data)),
-			Mimetype: mimetype,
-			Uploaded: time.Now().String(),
-			Object:   objectid.ObjectID(objectID),
-		},
-		Data: []byte(data),
-	}
-}
 
 func runTestWithTemporaryObject(obj *objectstore.Object, bucketName string, callback func(*fakestorage.Server)) error {
 	server := fakestorage.NewServer([]fakestorage.Object{
@@ -53,9 +39,19 @@ func initMockStore(c *storage.Client) *Store {
 
 func TestStoreRead(t *testing.T) {
 	t.Run("Should be able to read a file.", func(t *testing.T) {
-		object := generateObject(`abcdef`, `text/plain`, `helloworld`)
+		data := []byte(`helloworld`)
+		object := objectstore.New(`text/plain`, data)
 
-		runTestWithTemporaryObject(&object, bucketName, func(s *fakestorage.Server) {})
+		runTestWithTemporaryObject(object, bucketName, func(s *fakestorage.Server) {
+			store := initMockStore(s.Client())
+			so, err := store.Read(object.Metadata.Object)
+			if err != nil {
+				t.Error(err)
+			}
+			if bytes.Compare(so.Data, data) != 0 {
+				t.Errorf("Data field doesn't match, got %v, want %v", so.Data, data)
+			}
+		})
 	})
 }
 
