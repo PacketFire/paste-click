@@ -83,6 +83,10 @@ func TestStoreWrite(t *testing.T) {
 			if o.Name != string(object.Metadata.Object) {
 				t.Error("Object wasn't written to store.")
 			}
+
+			if bytes.Compare(o.Content, object.Data) != 0 {
+				t.Errorf("object data doesn't match, want %v got %v", o.Content, object.Data)
+			}
 		})
 	})
 }
