@@ -7,8 +7,8 @@ import (
 	"cloud.google.com/go/storage"
 	"context"
 	"github.com/PacketFire/paste-click/lib/objectstore"
-	"testing"
 	"github.com/PacketFire/paste-click/lib/objectstore/objectid"
+	"testing"
 )
 
 const (
@@ -61,6 +61,27 @@ func TestStoreRead(t *testing.T) {
 			_, err := store.Read(objectid.ObjectID("InvalidID"))
 			if err == nil {
 				t.Error("Object should throw an error if it doesn't exist")
+			}
+		})
+	})
+}
+
+func TestStoreWrite(t *testing.T) {
+	data := []byte(`write the world`)
+	object := objectstore.New(`text/plain`, data)
+
+	t.Run("An unallocated ID should successfully write", func(t *testing.T) {
+		runTestWithTemporaryObject(object, bucketName, func(s *fakestorage.Server) {
+			store := initMockStore(s.Client())
+			store.Write(object)
+
+			o, err := s.GetObject(bucketName, string(object.Metadata.Object))
+			if err != nil {
+				t.Errorf("Unable to write the object to the store, got error \"%v\" want nil", err)
+			}
+
+			if o.Name != string(object.Metadata.Object) {
+				t.Error("Object wasn't written to store.")
 			}
 		})
 	})

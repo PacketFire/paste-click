@@ -110,3 +110,4 @@ func (s *Store) Write(obj *objectstore.Object) error {
 func (s *Store) Close() error {
 	return s.client.Close()
 }
+
