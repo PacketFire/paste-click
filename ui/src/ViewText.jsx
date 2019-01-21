@@ -2,11 +2,11 @@ import styles from './viewtext.css';
 
 import React, { Component } from 'react';
 
+import classNames from 'classnames';
 import CodeMirror from 'codemirror';
 
 export default class ViewText extends Component {
   componentDidMount() {
-    console.log(this.props.text);
     this.editor = CodeMirror(document.getElementById('editor'), {
       value: this.props.text,
       lineNumbers: true,
@@ -15,8 +15,10 @@ export default class ViewText extends Component {
   }
 
   render() {
+    const classes = classNames(styles.editor, 'codemirror-expand');
+
     return (
-      <div className={styles.editor} id="editor"></div>
+      <div className={classes} id="editor"></div>
     );
   }
 }

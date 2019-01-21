@@ -11,7 +11,7 @@ module.exports = {
   output: {
     pathinfo: true,
     filename: 'assets/[name].[chunkhash].js',
-    publicPath: '/'
+    publicPath: '/beta/'
   },
   resolve: {
     extensions: ['.js', '.jsx']
@@ -73,7 +73,7 @@ module.exports = {
       template: './public/index.html'
     }),
     new webpack.DefinePlugin({
-      API_URL: JSON.stringify('http://paste.click')
+      API_URL: JSON.stringify('http://paste.click:8080')
     })
   ]
 };

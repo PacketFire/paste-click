@@ -7,10 +7,10 @@ export default class Header extends Component {
     return (
       <header className={styles.header}>
         <div className={styles.title}>
-          <a className={styles.title_link} href="/">paste.click</a>
+          <a className={styles.title_link} href="/beta">paste.click</a>
         </div>
         <div className={styles.links}>
-          <a className={styles.paste} href="/up">Paste</a>
+          <a className={styles.paste} href="/beta/up">Paste</a>
         </div>
       </header>
     );

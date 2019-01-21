@@ -1,13 +1,11 @@
-.editor {
+.video {
   width: 50%;
 
   border: 1px solid #ddd;
-
-  cursor: text;
 }
 
 @media only screen and (max-width: 900px) {
-  .editor {
+  .video {
     width: 100%;
   }
 }

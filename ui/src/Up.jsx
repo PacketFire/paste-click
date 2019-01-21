@@ -30,7 +30,10 @@ export default class Up extends Component {
       const file = files[0];
       axios.post(`${API_URL}`, file)
         .then(res => {
-          window.location = res.data;
+          const components = res.data.split('/');
+          const objectId = components[components.length - 1];
+
+          window.location = `/beta/s/${objectId}`;
         })
         .catch(err => {
           console.error(err);

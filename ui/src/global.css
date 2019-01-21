@@ -11,3 +11,7 @@ body {
 *, *:before, *:after {
   box-sizing: border-box;
 }
+
+.codemirror-expand .CodeMirror {
+  height: auto;
+}

@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "classnames": "^2.2.6",
     "codemirror": "^5.42.2",
     "normalize.css": "^8.0.1",
     "react": "^16.7.0",

@@ -12,6 +12,6 @@ FROM $BASEIMG
 LABEL maintainer="Nate Catelli <ncatelli@packetfire.org>" \
       description="Container for paste-click openresty"
 
-ENV APP_NAME=paste.click-react
+ENV APP_NAME=paste.click
 
-COPY --from=builder /project/ui/dist/* /www/${APP_NAME}/
+COPY --from=builder /project/ui/dist/ /www/${APP_NAME}/beta/
