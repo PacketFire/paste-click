@@ -110,6 +110,5 @@ func (s *Store) Write(obj *objectstore.Object) error {
 
 // Close cleans up any connections with the remote store.
 func (s *Store) Close() error {
-	return nil
+	return s.client.Close()
 }
-
