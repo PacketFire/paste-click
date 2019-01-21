@@ -14,6 +14,7 @@ import (
 	"github.com/PacketFire/paste-click/lib/middleware/logging"
 	"github.com/PacketFire/paste-click/lib/objectstore"
 	"github.com/PacketFire/paste-click/lib/objectstore/drivers/fs"
+	"github.com/PacketFire/paste-click/lib/objectstore/drivers/gcs"
 	"github.com/PacketFire/paste-click/lib/objectstore/drivers/mock"
 
 	"github.com/gorilla/mux"
@@ -27,6 +28,8 @@ func store(driverName string) objectstore.ObjectStore {
 		return &fs.Store{}
 	case `mock`:
 		return &mock.Store{}
+	case `gcs`:
+		return &gcs.Store{}
 	default:
 		return nil
 	}
@@ -61,3 +64,4 @@ func main() {
 		log.Fatalf("Error in ListenAndServe: %s", err)
 	}
 }
+
