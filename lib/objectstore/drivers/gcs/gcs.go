@@ -82,7 +82,8 @@ func (s *Store) Read(id objectid.ObjectID) (*objectstore.Object, error) {
 func (s *Store) Write(obj *objectstore.Object) error {
 	oid := string(obj.Metadata.Object)
 
-	w := s.bucket.Object(oid).NewWriter(s.ctx)
+	objHandler := s.bucket.Object(oid)
+	w := objHandler.NewWriter(s.ctx)
 	w.ACL = []storage.ACLRule{{Entity: storage.AllUsers, Role: storage.RoleReader}}
 	w.ContentType = obj.Metadata.Mimetype
 
@@ -92,6 +93,15 @@ func (s *Store) Write(obj *objectstore.Object) error {
 		return err
 	}
 	if err := w.Close(); err != nil {
+		return err
+	}
+
+	// Set Attrs
+	uAttrs := storage.ObjectAttrsToUpdate{
+		ContentType: obj.Metadata.Mimetype,
+	}
+	
+	if _, err := objHandler.Update(s.ctx, uAttrs); err != nil {
 		return err
 	}
 
