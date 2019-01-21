@@ -15,8 +15,6 @@ import (
 
 // Store implements the ObjectStore interface to store Objects in GCS
 type Store struct {
-	// the base path for reading and writing objects to.
-	BasePath   string `env:"STORE_FS_BASE_PATH,required"`
 	BucketName string `env:"STORE_GCS_BUCKET_NAME,required"`
 	client     *storage.Client
 	bucket     *storage.BucketHandle
@@ -100,7 +98,7 @@ func (s *Store) Write(obj *objectstore.Object) error {
 	uAttrs := storage.ObjectAttrsToUpdate{
 		ContentType: obj.Metadata.Mimetype,
 	}
-	
+
 	if _, err := objHandler.Update(s.ctx, uAttrs); err != nil {
 		return err
 	}
