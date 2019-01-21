@@ -3,11 +3,12 @@ package gcs
 import (
 	"github.com/fsouza/fake-gcs-server/fakestorage"
 
+	"bytes"
 	"cloud.google.com/go/storage"
 	"context"
 	"github.com/PacketFire/paste-click/lib/objectstore"
 	"testing"
-	"bytes"
+	"github.com/PacketFire/paste-click/lib/objectstore/objectid"
 )
 
 const (
@@ -38,10 +39,10 @@ func initMockStore(c *storage.Client) *Store {
 }
 
 func TestStoreRead(t *testing.T) {
-	t.Run("Should be able to read a file.", func(t *testing.T) {
-		data := []byte(`helloworld`)
-		object := objectstore.New(`text/plain`, data)
+	data := []byte(`helloworld`)
+	object := objectstore.New(`text/plain`, data)
 
+	t.Run("Should be able to read a file.", func(t *testing.T) {
 		runTestWithTemporaryObject(object, bucketName, func(s *fakestorage.Server) {
 			store := initMockStore(s.Client())
 			so, err := store.Read(object.Metadata.Object)
@@ -53,5 +54,30 @@ func TestStoreRead(t *testing.T) {
 			}
 		})
 	})
+
+	t.Run("Reading a non-existent file should return an error.", func(t *testing.T) {
+		runTestWithTemporaryObject(object, bucketName, func(s *fakestorage.Server) {
+			store := initMockStore(s.Client())
+			_, err := store.Read(objectid.ObjectID("InvalidID"))
+			if err == nil {
+				t.Error("Object should throw an error if it doesn't exist.")
+			}
+		})
+	})
+}
+
+func TestStoreClose(t *testing.T) {
+	t.Run("Should be able to read a file.", func(t *testing.T) {
+		data := []byte(`helloworld`)
+		object := objectstore.New(`text/plain`, data)
+
+		runTestWithTemporaryObject(object, bucketName, func(s *fakestorage.Server) {
+			store := initMockStore(s.Client())
+			if store.Close() != nil {
+				t.Error("Store should successfully close session with server.")
+			}
+		})
+	})
+
 }
 
