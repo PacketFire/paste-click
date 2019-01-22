@@ -8,3 +8,5 @@ import:
   version: ^v3.5.0
 - package: github.com/gorilla/handlers
   version: ^v1.4.0
+- package: 	cloud.google.com/go
+  version: ^v0.34.0
