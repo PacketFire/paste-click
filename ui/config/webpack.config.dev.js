@@ -1,5 +1,4 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { VueLoaderPlugin } = require('vue-loader');
 const webpack = require('webpack');
 
 module.exports = {
@@ -13,34 +12,53 @@ module.exports = {
     ]
   },
   entry: [
-    './src/app.js'
+    './src/index.js'
   ],
   output: {
     pathinfo: true,
     filename: 'static/js/bundle.js',
     publicPath: '/'
   },
+  resolve: {
+    extensions: ['.js', '.jsx']
+  },
   module: {
     rules: [
       {
-        test: /\.vue$/,
-        use: 'vue-loader'
-      },
-      {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         use: 'babel-loader'
       },
       {
         test: /\.css$/,
+        exclude: /(index.css|global.css|node_modules)/,
         use: [
-          'vue-style-loader',
-          'css-loader'
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              localIdentName: "[name]__[local]___[hash:base64:5]",
+              modules: true,
+            },
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        include: /(index.css|global.css|node_modules)/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1
+            },
+          }
         ]
       }
     ]
   },
   plugins: [
-    new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
       inject: true,
       template: './public/index.html'

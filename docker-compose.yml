@@ -9,7 +9,7 @@ services:
       - 8080:80
       - 8443:443
     volumes:
-      - content:/www/paste.click/
+      - content:/www/paste.click/objects/
       - proxy_cache:/data/nginx/cache
       - ./assets/index.html:/www/paste.click/index.html
       - ./assets/s:/www/paste.click/s
@@ -29,11 +29,11 @@ services:
     environment:
       ADDR: ':8001'
       STORAGE_DRIVER: 'fs'
-      STORE_FS_BASE_PATH: "/www/paste.click/"
+      STORE_FS_BASE_PATH: "/www/paste.click/objects/"
     ports:
       - 8001:8001
     volumes:
-      - content:/www/paste.click/
+      - content:/www/paste.click/objects/
     networks:
       - backend
 volumes:

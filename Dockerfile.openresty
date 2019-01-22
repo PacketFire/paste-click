@@ -14,4 +14,4 @@ LABEL maintainer="Nate Catelli <ncatelli@packetfire.org>" \
 
 ENV APP_NAME=paste.click
 
-COPY --from=builder /project/ui/dist/* /www/${APP_NAME}/vue/
+COPY --from=builder /project/ui/dist/ /www/${APP_NAME}/beta/

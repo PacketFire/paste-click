@@ -1,0 +1,11 @@
+.video {
+  width: 50%;
+
+  border: 1px solid #ddd;
+}
+
+@media only screen and (max-width: 900px) {
+  .video {
+    width: 100%;
+  }
+}

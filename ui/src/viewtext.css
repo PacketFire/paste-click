@@ -1,0 +1,13 @@
+.editor {
+  width: 50%;
+
+  border: 1px solid #ddd;
+
+  cursor: text;
+}
+
+@media only screen and (max-width: 900px) {
+  .editor {
+    width: 100%;
+  }
+}
