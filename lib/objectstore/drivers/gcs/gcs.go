@@ -91,6 +91,7 @@ func (s *Store) Write(obj *objectstore.Object) error {
 	if _, err := io.Copy(w, buf); err != nil {
 		return err
 	}
+
 	if err := w.Close(); err != nil {
 		return err
 	}
@@ -101,7 +102,6 @@ func (s *Store) Write(obj *objectstore.Object) error {
 	}
 
 	if _, err := objHandler.Update(s.ctx, uAttrs); err != nil {
-		return err
 	}
 
 	return nil
