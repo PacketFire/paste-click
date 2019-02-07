@@ -84,7 +84,6 @@ func (s *Store) Write(obj *objectstore.Object) error {
 
 	objHandler := s.bucket.Object(oid)
 	w := objHandler.NewWriter(s.ctx)
-	w.ACL = []storage.ACLRule{{Entity: storage.AllUsers, Role: storage.RoleReader}}
 	w.ContentType = obj.Metadata.Mimetype
 
 	buf := bytes.NewBuffer(obj.Data)

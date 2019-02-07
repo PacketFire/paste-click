@@ -4,11 +4,12 @@ import (
 	"github.com/fsouza/fake-gcs-server/fakestorage"
 
 	"bytes"
-	"cloud.google.com/go/storage"
 	"context"
+	"testing"
+
+	"cloud.google.com/go/storage"
 	"github.com/PacketFire/paste-click/lib/objectstore"
 	"github.com/PacketFire/paste-click/lib/objectstore/objectid"
-	"testing"
 )
 
 const (
@@ -102,4 +103,3 @@ func TestStoreClose(t *testing.T) {
 		}
 	})
 }
-
