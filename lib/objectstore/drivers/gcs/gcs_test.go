@@ -4,11 +4,12 @@ import (
 	"github.com/fsouza/fake-gcs-server/fakestorage"
 
 	"bytes"
-	"cloud.google.com/go/storage"
 	"context"
+	"testing"
+
+	"cloud.google.com/go/storage"
 	"github.com/PacketFire/paste-click/lib/objectstore"
 	"github.com/PacketFire/paste-click/lib/objectstore/objectid"
-	"testing"
 )
 
 const (
@@ -89,6 +90,20 @@ func TestStoreWrite(t *testing.T) {
 			}
 		})
 	})
+
+	t.Run("Duplicate writes shouldn't throw error", func(t *testing.T) {
+		runTestWithTemporaryObject(object, bucketName, func(s *fakestorage.Server) {
+			store := initMockStore(s.Client())
+			if err := store.Write(object); err != nil {
+				t.Errorf("Unable to write the object to the store, got error \"%v\" want nil", err)
+			}
+
+			// Attempt to write duplicate object
+			if err := store.Write(object); err != nil {
+				t.Errorf("Unable to write duplicate object, got error \"%v\" want nil", err)
+			}
+		})
+	})
 }
 
 func TestStoreClose(t *testing.T) {
@@ -102,4 +117,3 @@ func TestStoreClose(t *testing.T) {
 		}
 	})
 }
-

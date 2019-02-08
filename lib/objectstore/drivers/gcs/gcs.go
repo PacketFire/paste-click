@@ -2,12 +2,14 @@ package gcs
 
 import (
 	"bytes"
-	"errors"
-	"github.com/PacketFire/paste-click/lib/objectstore/metadata"
+	"fmt"
 	"io"
 
-	"cloud.google.com/go/storage"
+	"github.com/PacketFire/paste-click/lib/objectstore/metadata"
+
 	"context"
+
+	"cloud.google.com/go/storage"
 	"github.com/PacketFire/paste-click/lib/objectstore"
 	"github.com/PacketFire/paste-click/lib/objectstore/objectid"
 	"github.com/caarlos0/env"
@@ -26,7 +28,7 @@ func (s *Store) Init() error {
 	s.ctx = context.Background()
 	client, err := storage.NewClient(s.ctx)
 	if err != nil {
-		return errors.New("Unable to initialize client")
+		return fmt.Errorf("Unable to initialize client: %s", err)
 	}
 
 	if err = env.Parse(s); err != nil {
@@ -82,7 +84,6 @@ func (s *Store) Write(obj *objectstore.Object) error {
 
 	objHandler := s.bucket.Object(oid)
 	w := objHandler.NewWriter(s.ctx)
-	w.ACL = []storage.ACLRule{{Entity: storage.AllUsers, Role: storage.RoleReader}}
 	w.ContentType = obj.Metadata.Mimetype
 
 	buf := bytes.NewBuffer(obj.Data)
@@ -90,6 +91,7 @@ func (s *Store) Write(obj *objectstore.Object) error {
 	if _, err := io.Copy(w, buf); err != nil {
 		return err
 	}
+
 	if err := w.Close(); err != nil {
 		return err
 	}
@@ -100,7 +102,6 @@ func (s *Store) Write(obj *objectstore.Object) error {
 	}
 
 	if _, err := objHandler.Update(s.ctx, uAttrs); err != nil {
-		return err
 	}
 
 	return nil
@@ -110,4 +111,3 @@ func (s *Store) Write(obj *objectstore.Object) error {
 func (s *Store) Close() error {
 	return s.client.Close()
 }
-
