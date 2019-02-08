@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paste-click
+  labels:
+    app: paste-click
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paste-click
+  template:
+    metadata:
+      labels:
+        app: paste-click
+    spec:
+      containers:
+        - name: paste-click
+          image: gcr.io/__GCP_PROJECT_ID__/paste-click:latest
+          ports:
+            - containerPort: 8001
+          env:
+            - name: ADDR
+              value: ':8001'
+            - name: STORAGE_DRIVER
+              value: gcs
+            - name: STORE_GCS_BUCKET_NAME
+              value: __GCS_BUCKET_NAME__
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/credentials.json
+          volumeMounts:
+            - name: gcs-sa-credentials
+              mountPath: /var/secrets/google/
+      volumes:
+        - name: gcs-sa-credentials
+          secret:
+            secretName: gcs-sa-credentials
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paste-click
+  labels:
+    app: paste-click
+spec:
+  ports:
+    - port: 8001
+      protocol: TCP
+  selector:
+    app: paste-click
