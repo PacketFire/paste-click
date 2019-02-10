@@ -80,8 +80,8 @@ func TestGetExtension(t *testing.T) {
 	store := initializeStoreForTesting()
 
 	t.Run("Validate that a valid mimetype returns the expected string.", func(t *testing.T) {
-		if extension := store.getExtensionFromMimetype(`text/plain`); extension != `.asc` {
-			t.Errorf("Extension didn't match mimetype, expected .asc got %s", extension)
+		if extension := store.getExtensionFromMimetype(`text/plain`); extension != `.asc`  && extension != `.txt` {
+			t.Errorf("Extension didn't match mimetype, expected .asc or .txt got %s", extension)
 		}
 	})
 	t.Run("Attempt to read an unknown mimetype should return an error.", func(t *testing.T) {
