@@ -7,7 +7,6 @@ require (
 	github.com/gorilla/handlers v1.4.0
 	github.com/gorilla/mux v1.6.2
 	github.com/rakyll/magicmime v0.1.0
-	github.com/speps/go-hashids v2.0.0+incompatible
 	github.com/stretchr/testify v1.3.0 // indirect
 	google.golang.org/api v0.1.0 // indirect
 )
