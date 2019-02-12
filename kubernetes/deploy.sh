@@ -1,5 +1,5 @@
 #!/bin/bash
 
-sed > paste-click.yaml
+# sed > paste-click.yaml
 
 
