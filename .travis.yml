@@ -1,9 +1,9 @@
 stages:
   - test
   - name: publish
-    if: branch = master AND TRAVIS_PULL_REQUEST = false
+    if: branch = master AND type = push
   - name: deploy
-    if: branch = master AND TRAVIS_PULL_REQUEST = false
+    if: branch = master AND type = push
 
 jobs:
   include:
