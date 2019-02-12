@@ -38,4 +38,4 @@ jobs:
       before_script:
         - echo set up service account here
       script:
-        - bash deploy.sh
+        - ./deploy.sh
