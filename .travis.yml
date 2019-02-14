@@ -20,9 +20,13 @@ jobs:
       script:
         - echo $GCP_SERVICE_ACCOUNT | base64 --decode > keyfile.json
         - cat keyfile.json | docker login -u _json_key --password-stdin https://gcr.io
-        - docker build -t gcr.io/$GCP_PROJECT_ID/paste-click:latest .
-        - docker build -t gcr.io/$GCP_PROJECT_ID/openresty-paste-click:latest -f Dockerfile.openresty .
+        - docker build -t gcr.io/$GCP_PROJECT_ID/paste-click:$TRAVIS_COMMIT .
+        - docker tag gcr.io/$GCP_PROJECT_ID/paste-click:$TRAVIS_COMMIT gcr.io/$GCP_PROJECT_ID/paste-click:latest
+        - docker push gcr.io/$GCP_PROJECT_ID/paste-click:$TRAVIS_COMMIT
         - docker push gcr.io/$GCP_PROJECT_ID/paste-click:latest
+        - docker build -t gcr.io/$GCP_PROJECT_ID/openresty-paste-click:$TRAVIS_COMMIT -f Dockerfile.openresty .
+        - docker tag gcr.io/$GCP_PROJECT_ID/openresty-paste-click:$TRAVIS_COMMIT gcr.io/$GCP_PROJECT_ID/openresty-paste-click:latest
+        - docker push gcr.io/$GCP_PROJECT_ID/openresty-paste-click:$TRAVIS_COMMIT
         - docker push gcr.io/$GCP_PROJECT_ID/openresty-paste-click:latest
       services:
         - docker
