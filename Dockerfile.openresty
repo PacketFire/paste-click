@@ -18,5 +18,6 @@ COPY --from=builder /project/assets/index.html /www/${APP_NAME}/index.html
 COPY --from=builder /project/assets/s/ /www/${APP_NAME}/s/
 COPY --from=builder /project/assets/up/ /www/${APP_NAME}/up/
 COPY --from=builder /project/ui/dist/ /www/${APP_NAME}/beta/
-COPY --from=builder /project/resty/nginx.conf /usr/local/openresty/nginx/config/nginx.conf
-COPY --from=builder /project/resty/paste.click.conf /usr/local/openresty/nginx/sites-enabled/paste.click.conf
+COPY --from=builder /project/resty/start.sh /start.sh
+
+CMD ["sh", "/start.sh"]

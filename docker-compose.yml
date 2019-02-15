@@ -5,6 +5,8 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.openresty
+    environment:
+      PASTE_CLICK_UPSTREAM: "http://backend:8001"
     ports:
       - 8080:80
       - 8443:443
