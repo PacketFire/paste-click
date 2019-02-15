@@ -11,8 +11,6 @@ services:
     volumes:
       - content:/www/paste.click/objects/
       - proxy_cache:/data/nginx/cache
-      - ./resty/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
-      - ./resty/paste.click.conf:/usr/local/openresty/nginx/conf/sites-enabled/paste.click.conf:ro
       - ./resty/ssl:/etc/ssl/nginx:ro
     networks:
       - backend
