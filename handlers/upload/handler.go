@@ -54,7 +54,7 @@ func (uh *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unable to save object", http.StatusInternalServerError)
 	}
 
-	fileURL := strings.Join([]string{scheme, "://", r.Host, r.RequestURI, id, "\n"}, "")
+	fileURL := strings.Join([]string{scheme, "://", "cdn.", r.Host, r.RequestURI, id, "\n"}, "")
 	w.Write([]byte(fileURL))
 }
 
