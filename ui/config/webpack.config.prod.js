@@ -73,7 +73,7 @@ module.exports = {
       template: './public/index.html'
     }),
     new webpack.DefinePlugin({
-      API_URL: JSON.stringify('http://paste.click:8080')
+      API_URL: JSON.stringify('http://paste.click')
     })
   ]
 };

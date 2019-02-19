@@ -5,17 +5,14 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.openresty
+    environment:
+      PASTE_CLICK_UPSTREAM: "http://backend:8001"
     ports:
       - 8080:80
       - 8443:443
     volumes:
       - content:/www/paste.click/objects/
       - proxy_cache:/data/nginx/cache
-      - ./assets/index.html:/www/paste.click/index.html
-      - ./assets/s:/www/paste.click/s
-      - ./assets/up:/www/paste.click/up
-      - ./resty/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
-      - ./resty/paste.click.conf:/usr/local/openresty/nginx/conf/sites-enabled/paste.click.conf:ro
       - ./resty/ssl:/etc/ssl/nginx:ro
     networks:
       - backend
