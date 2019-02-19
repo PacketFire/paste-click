@@ -19,7 +19,6 @@ import (
 type Store struct {
 	BucketName string `env:"STORE_GCS_BUCKET_NAME,required"`
 	client     *storage.Client
-	bucket     *storage.BucketHandle
 	ctx        context.Context
 }
 
@@ -36,7 +35,6 @@ func (s *Store) Init() error {
 	}
 
 	s.client = client
-	s.bucket = client.Bucket(s.BucketName)
 
 	return nil
 }
@@ -45,7 +43,8 @@ func (s *Store) Init() error {
 // object from the GCS bucket. On success, a file is returned. On failure an
 // error is returned with a nil Object pointer.
 func (s *Store) Read(id objectid.ObjectID) (*objectstore.Object, error) {
-	obj := s.bucket.Object(string(id))
+	bucket := s.client.Bucket(s.BucketName)
+	obj := bucket.Object(string(id))
 
 	r, err := obj.NewReader(s.ctx)
 	if err != nil {
@@ -82,7 +81,8 @@ func (s *Store) Read(id objectid.ObjectID) (*objectstore.Object, error) {
 func (s *Store) Write(obj *objectstore.Object) error {
 	oid := string(obj.Metadata.Object)
 
-	objHandler := s.bucket.Object(oid)
+	bucket := s.client.Bucket(s.BucketName)
+	objHandler := bucket.Object(oid)
 	w := objHandler.NewWriter(s.ctx)
 	w.ContentType = obj.Metadata.Mimetype
 
