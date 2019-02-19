@@ -34,7 +34,6 @@ func initMockStore(c *storage.Client) *Store {
 	return &Store{
 		BucketName: bucketName,
 		client:     c,
-		bucket:     c.Bucket(bucketName),
 		ctx:        context.Background(),
 	}
 }
