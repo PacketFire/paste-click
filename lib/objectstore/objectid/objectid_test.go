@@ -20,7 +20,7 @@ func TestObjectIDToString(t *testing.T) {
 func TestObjectIDInstantiation(t *testing.T) {
 	t.Run("ObjectID generates a consistent hash from a md5 hasher.", func(t *testing.T) {
 		data := []byte("hello")
-		expectedHash := "XUFAKrxLKna5cZ2REBfFkg=="
+		expectedHash := "XUFAKrxLKna5cZ2REBfFkg"
 		sum := md5.New()
 
 		sum.Write(data)

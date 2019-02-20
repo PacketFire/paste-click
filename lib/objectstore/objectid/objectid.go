@@ -1,7 +1,7 @@
 package objectid
 
 import (
-	"encoding/base64"
+	b64 "encoding/base64"
 	"hash"
 )
 
@@ -11,5 +11,5 @@ type ObjectID string
 // New takes a Hash as an argument and uses that to generate a new ObjectID.
 func New(h hash.Hash) ObjectID {
 	// Generate checksum and truncate it to 6 characters
-	return ObjectID(base64.URLEncoding.EncodeToString(h.Sum(nil)))
+	return ObjectID(b64.URLEncoding.WithPadding(b64.NoPadding).EncodeToString(h.Sum(nil)))
 }
