@@ -1,10 +1,10 @@
 package upload
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/PacketFire/paste-click/lib/objectstore"
 	"github.com/rakyll/magicmime"
@@ -14,13 +14,15 @@ import (
 // storage driver.
 type Handler struct {
 	StorageDriver objectstore.ObjectStore
+	siteName      string
 }
 
 // New instantiates a new upload Handler.
-func New(store objectstore.ObjectStore) *Handler {
+func New(siteName string, store objectstore.ObjectStore) *Handler {
 	store.Init()
 	return &Handler{
 		StorageDriver: store,
+		siteName:      siteName,
 	}
 }
 
@@ -54,7 +56,7 @@ func (uh *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unable to save object", http.StatusInternalServerError)
 	}
 
-	fileURL := strings.Join([]string{scheme, "://", r.Host, r.RequestURI, id, "\n"}, "")
+	fileURL := fmt.Sprintf("%s://%s%s%s\n", scheme, uh.siteName, r.RequestURI, id)
 	w.Write([]byte(fileURL))
 }
 

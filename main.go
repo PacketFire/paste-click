@@ -46,7 +46,7 @@ func main() {
 	defer s.Close()
 
 	// Setup Upload handling
-	uh := upload.New(s)
+	uh := upload.New(c.SiteName, s)
 	mux.Handle(`/`, uh).Methods("POST")
 
 	// Setup read handling
@@ -64,4 +64,3 @@ func main() {
 		log.Fatalf("Error in ListenAndServe: %s", err)
 	}
 }
-
