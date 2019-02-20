@@ -6,6 +6,7 @@ require (
 	github.com/fsouza/fake-gcs-server v1.3.1
 	github.com/gorilla/handlers v1.4.0
 	github.com/gorilla/mux v1.6.2
+	github.com/lytics/base62 v0.0.0-20180808010106-0ee4de5a5d6d
 	github.com/rakyll/magicmime v0.1.0
 	github.com/stretchr/testify v1.3.0 // indirect
 	google.golang.org/api v0.1.0 // indirect

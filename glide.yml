@@ -10,3 +10,5 @@ import:
   version: ^v1.4.0
 - package: 	cloud.google.com/go
   version: ^v0.34.0
+- package: lytics/base62
+  version: 0ee4de5a5d6d26db3daa72bd80a860ff2332b437
