@@ -3,6 +3,20 @@ Paste.Click
 
 [![Build Status](https://travis-ci.org/PacketFire/paste-click.svg?branch=master)](https://travis-ci.org/PacketFire/paste-click)
 
+<!-- TOC -->
+
+- [General](#general)
+- [Building](#building)
+    - [Dependencies](#dependencies)
+    - [Docker](#docker)
+    - [Locally](#locally)
+- [Testing](#testing)
+- [Running](#running)
+    - [Docker-Compose](#docker-compose)
+- [Configuration](#configuration)
+
+<!-- /TOC -->
+
 ## General
 Paste-click is meant to serve as an online clipboard and provides easy interaction with files via curl.
 
@@ -82,13 +96,16 @@ Configuration parameters are provided via environment variables. Currently the f
 
   The bind address for the service
 
+- SITE_NAME: 'paste.click'
+  
+  A configuration setting representing the returned domain name in all upload calls.
 - LOGGING: 'true'
 
   A boolean value determining whether to enable logging of requests to stdout.
 
 - STORAGE_DRIVER: 'fs'
 
-  The backend storage driver to use. Currently there are only two, mock and fs.
+  The backend storage driver to use. Currently these options are mock, fs and gcs.
 - STORE_FS_BASE_PATH: "/www/paste.click/"
 
   The base path of the to store files under. This should always point to the document root of openresty.

@@ -11,7 +11,6 @@ services:
       - 8080:80
       - 8443:443
     volumes:
-      - content:/www/paste.click/objects/
       - proxy_cache:/data/nginx/cache
       - ./resty/ssl:/etc/ssl/nginx:ro
     networks:
@@ -27,6 +26,7 @@ services:
       ADDR: ':8001'
       STORAGE_DRIVER: 'fs'
       STORE_FS_BASE_PATH: "/www/paste.click/objects/"
+      SITE_NAME: "localhost:8080"
     ports:
       - 8001:8001
     volumes:
