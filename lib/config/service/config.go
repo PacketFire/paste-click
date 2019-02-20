@@ -10,7 +10,7 @@ type Config struct {
 	Addr          string `env:"ADDR" envDefault:":8001"`
 	Logging       bool   `env:"LOGGING" envDefault:"true"`
 	StorageDriver string `env:"STORAGE_DRIVER" envDefault:"fs"`
-	SiteName      string `env:"SiteName" envDefault:"paste.click"`
+	SiteName      string `env:"SITE_NAME" envDefault:"paste.click"`
 }
 
 // New instantiates a new Config and attempts to parse parameters from
