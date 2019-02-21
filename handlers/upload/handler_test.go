@@ -41,8 +41,9 @@ func handlerTest(method, path string, reqBody io.Reader, respCode int, respBody 
 }
 
 func TestBuiltInRoutes(t *testing.T) {
+	siteName := `paste.click`
 	store := &mock.Store{}
-	uh := New(store)
+	uh := New(siteName, store)
 	t.Run("Upload handler returns the correct response", func(t *testing.T) {
 		err := handlerTest("POST", "/", strings.NewReader(`helloworld`), http.StatusOK, `helloworld`, uh.ServeHTTP)
 		if err != nil {

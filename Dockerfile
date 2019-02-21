@@ -20,7 +20,7 @@ ENV APP_NAME=paste-click
 
 RUN addgroup ${SERVICE_USER} && \
     adduser -D -G ${SERVICE_USER} ${SERVICE_USER} && \
-    apk add --no-cache libmagic
+    apk add --no-cache libmagic ca-certificates
 
 COPY --from=builder /${APP_NAME} /opt/${APP_NAME}/bin/
 

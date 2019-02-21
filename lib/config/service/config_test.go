@@ -11,6 +11,7 @@ var (
 		Addr:          ":8080",
 		Logging:       true,
 		StorageDriver: "fs",
+		SiteName:      "paste.click",
 	}
 )
 

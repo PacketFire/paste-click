@@ -3,6 +3,20 @@ Paste.Click
 
 [![Build Status](https://travis-ci.org/PacketFire/paste-click.svg?branch=master)](https://travis-ci.org/PacketFire/paste-click)
 
+<!-- TOC -->
+
+- [General](#general)
+- [Building](#building)
+    - [Dependencies](#dependencies)
+    - [Docker](#docker)
+    - [Locally](#locally)
+- [Testing](#testing)
+- [Running](#running)
+    - [Docker-Compose](#docker-compose)
+- [Configuration](#configuration)
+
+<!-- /TOC -->
+
 ## General
 Paste-click is meant to serve as an online clipboard and provides easy interaction with files via curl.
 
@@ -46,27 +60,27 @@ This exposes the openresty service on port localhost:8080 and files can be uploa
 $> echo 'hello' | curl -sD - 'http://localhost:8080/' -H 'Host: paste.click' --data-binary @-
 HTTP/1.1 200 OK
 Server: openresty/1.13.6.2
-Date: Thu, 03 Jan 2019 00:41:59 GMT
+Date: Wed, 20 Feb 2019 23:37:24 GMT
 Content-Type: text/plain; charset=utf-8
-Content-Length: 52
+Content-Length: 45
 Connection: keep-alive
 Content-Disposition: filename=""
 Access-Control-Allow-Origin: *
 
-http://paste.click/b1946ac92492d2347c6235b4d2611184
+http://localhost:8080/sZRqySSS0jR8YjW00mERhA
 ```
 
 This object can then be queried with the following command.
 
 ```sh
-$> curl -sD - 'http://localhost:8080/b1946ac92492d2347c6235b4d2611184' -H 'Host: paste.click'
+$> curl -sD - 'http://localhost:8080/sZRqySSS0jR8YjW00mERhA' -H 'Host: paste.click'
 Content-Type: text/plain
 Content-Length: 6
 Last-Modified: Thu, 03 Jan 2019 00:41:59 GMT
 Connection: keep-alive
 PC-Mime-type: text/plain
 PC-Size: 6
-PC-Object: b1946ac92492d2347c6235b4d2611184
+PC-Object: sZRqySSS0jR8YjW00mERhA
 PC-Uploaded: 2019-01-03 00:41:59.139780917 +0000 UTC m=+64.410846356
 ETag: "5c2d5a57-6"
 PC-Metafile: hit
@@ -82,13 +96,16 @@ Configuration parameters are provided via environment variables. Currently the f
 
   The bind address for the service
 
+- SITE_NAME: 'paste.click'
+  
+  A configuration setting representing the returned domain name in all upload calls.
 - LOGGING: 'true'
 
   A boolean value determining whether to enable logging of requests to stdout.
 
 - STORAGE_DRIVER: 'fs'
 
-  The backend storage driver to use. Currently there are only two, mock and fs.
+  The backend storage driver to use. Currently these options are mock, fs and gcs.
 - STORE_FS_BASE_PATH: "/www/paste.click/"
 
   The base path of the to store files under. This should always point to the document root of openresty.
