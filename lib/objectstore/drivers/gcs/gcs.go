@@ -84,6 +84,10 @@ func (s *Store) Write(obj *objectstore.Object) error {
 	bucket := s.client.Bucket(s.BucketName)
 	objHandler := bucket.Object(oid)
 	w := objHandler.NewWriter(s.ctx)
+	if w == nil {
+		return nil
+	}
+
 	w.ContentType = obj.Metadata.Mimetype
 
 	buf := bytes.NewBuffer(obj.Data)

@@ -53,7 +53,8 @@ func (uh *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	err = uh.StorageDriver.Write(obj)
 	if err != nil {
-		http.Error(w, "Unable to save object", http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("Unable to save object: %s", err), http.StatusInternalServerError)
+		return
 	}
 
 	fileURL := fmt.Sprintf("%s://%s%s%s\n", scheme, uh.siteName, r.RequestURI, id)
