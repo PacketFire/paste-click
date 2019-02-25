@@ -1,14 +1,4 @@
-ARG BASEIMG="openresty/openresty:alpine"
-ARG BUILDIMG="node:10.15.0-alpine"
-FROM $BUILDIMG as builder
-
-COPY . /project/
-
-RUN cd /project/ui/ && \
-    npm install && \
-    npm run build
-
-FROM $BASEIMG
+FROM $openresty/openresty:alpine
 LABEL maintainer="Nate Catelli <ncatelli@packetfire.org>" \
       description="Container for paste-click openresty"
 
@@ -17,7 +7,6 @@ ENV APP_NAME=paste.click
 COPY --from=builder /project/assets/index.html /www/${APP_NAME}/index.html
 COPY --from=builder /project/assets/s/ /www/${APP_NAME}/s/
 COPY --from=builder /project/assets/up/ /www/${APP_NAME}/up/
-COPY --from=builder /project/ui/dist/ /www/${APP_NAME}/beta/
 COPY --from=builder /project/resty/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 COPY --from=builder /project/resty/paste.click.conf /usr/local/openresty/nginx/conf/sites-enabled/paste.click.conf
 COPY --from=builder /project/resty/start.sh /start.sh

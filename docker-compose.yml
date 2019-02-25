@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile.openresty
     environment:
       PASTE_CLICK_UPSTREAM: "http://backend:8001"
+      PASTE_CLICK_FRONTEND_BUCKET: none
     ports:
       - 8080:80
       - 8443:443
