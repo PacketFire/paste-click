@@ -1,4 +1,4 @@
-FROM $openresty/openresty:alpine
+FROM openresty/openresty:alpine
 LABEL maintainer="Nate Catelli <ncatelli@packetfire.org>" \
       description="Container for paste-click openresty"
 
