@@ -4,11 +4,11 @@ LABEL maintainer="Nate Catelli <ncatelli@packetfire.org>" \
 
 ENV APP_NAME=paste.click
 
-COPY /project/assets/index.html /www/${APP_NAME}/index.html
-COPY /project/assets/s/ /www/${APP_NAME}/s/
-COPY /project/assets/up/ /www/${APP_NAME}/up/
-COPY /project/resty/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
-COPY /project/resty/paste.click.conf /usr/local/openresty/nginx/conf/sites-enabled/paste.click.conf
-COPY /project/resty/start.sh /start.sh
+COPY /assets/index.html /www/${APP_NAME}/index.html
+COPY /assets/s/ /www/${APP_NAME}/s/
+COPY /assets/up/ /www/${APP_NAME}/up/
+COPY /resty/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+COPY /resty/paste.click.conf /usr/local/openresty/nginx/conf/sites-enabled/paste.click.conf
+COPY /resty/start.sh /start.sh
 
 CMD ["sh", "/start.sh"]
