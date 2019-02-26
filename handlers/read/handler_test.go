@@ -2,11 +2,12 @@ package read
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/gorilla/mux"
 
 	"github.com/PacketFire/paste-click/lib/objectstore"
 	"github.com/PacketFire/paste-click/lib/objectstore/drivers/mock"
@@ -14,6 +15,10 @@ import (
 
 var (
 	testObject = objectstore.New(
+		"text/html",
+		[]byte("hello"),
+	)
+	returnedTestObject = objectstore.New(
 		"text/plain",
 		[]byte("hello"),
 	)
