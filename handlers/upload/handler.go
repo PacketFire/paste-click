@@ -71,5 +71,11 @@ func getMimeString(data []byte) (string, error) {
 	if err != nil {
 		log.Fatalf("error occured during type lookup: %v", err)
 	}
+
+	// DEVNOTE NC hotfix for #56
+	if mimetype == `text/html` {
+		mimetype = `text/plain`
+	}
+
 	return mimetype, nil
 }

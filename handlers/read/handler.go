@@ -1,10 +1,11 @@
 package read
 
 import (
+	"net/http"
+
 	"github.com/PacketFire/paste-click/lib/objectstore"
 	"github.com/PacketFire/paste-click/lib/objectstore/objectid"
 	"github.com/gorilla/mux"
-	"net/http"
 )
 
 // Handler stores all required context for handing off requests to a
@@ -31,6 +32,11 @@ func (uh *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
+	}
+
+	// DEVNOTE NC hotfix for #56
+	if object.Metadata.Mimetype == "text/html" {
+		object.Metadata.Mimetype = "text/plain"
 	}
 
 	// Set paste-click metadata headers.
