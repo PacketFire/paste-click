@@ -12,8 +12,14 @@ function getPastePre(){
 function highlightPre(pastePre){
 	hljs.highlightBlock(document.body);  	
 	hljs.highlightBlock(pastePre);
-	}
+}
 function initPaste(){
 	inPastePre = getPastePre();
 	highlightPre(inPastePre);
+}
+function codeType(){
+	if(window.location.hash){
+		var lang = window.location.hash.substr(1);
+	}
+	return lang;
 }
